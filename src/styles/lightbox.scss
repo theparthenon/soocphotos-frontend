@@ -1,0 +1,55 @@
+.lightboxSidebar {
+    background-color: light-dark(
+        var(-mantine-color-gray-0),
+        var(-mantine-color-dark-6)
+    );
+    padding: var(--mantine-spacing-sm);
+    top: 0;
+    right: 0;
+    float: right;
+    white-space: normal;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    z-index: 250;
+}
+
+.hashtag {
+    border: 0.1rem transparent;
+    font-size: 0.6875rem;
+    background-color: #d8f5a2;
+    color: #66a80f;
+    letter-spacing: rem(0.25px);
+    border-radius: 2rem;
+    line-height: calc(1.25rem - 0.125rem);
+    align-items: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    justify-content: center;
+    padding: 0 calc(1rem / 1.5);
+    box-decoration-break: clone;
+    display: inline-flex;
+}
+
+.lightboxCaptionButton {
+    display: block;
+    padding: var(--mantine-spacing-xs);
+    border-radius: var(--mantine-radius-xl);
+    text-decoration: none;
+    font-size: var(--mantine-font-size-sm);
+    color: light-dark(
+        var(--mantine-color-gray-7),
+        var(--mantine-color-dark-1)
+    );
+    background-color: light-dark(
+        var(--mantine-color-gray-1),
+        var(--mantine-color-dark-4)
+    );
+
+    &:hover {
+        background-color: light-dark(
+            var(--mantine-color-gray-3),
+            var(--mantine-color-dark-6)
+        );
+    }
+}

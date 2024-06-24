@@ -1,0 +1,35 @@
+.photoListBox {
+    background-color: light-dark(
+        var(--mantine-color-gray-0),
+        var(--mantine-color-dark-6)
+    );
+    text-align: center;
+    cursor: pointer;
+    position: sticky;
+    z-index: 10;
+    box-sizing: border-box;
+    top: rem(45px);
+    padding: rem(6px);
+}
+
+.photoListBoxInner {
+    background-color: light-dark(
+        var(--mantine-color-gray-2),
+        var(--mantine-color-dark-7)
+    );
+    border-radius: rem(10px);
+    padding: rem(4px);
+    cursor: pointer;
+    text-align: center;
+}
+
+.videoContainer {
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0 0 5px 5px;
+}
+
+.videoDuration {
+    margin: 5px 0 0 5px;
+}

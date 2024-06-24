@@ -1,0 +1,40 @@
+.dateTimeTable {
+    width: 100%;
+}
+
+.dateTimeRuleType {
+    font-size: 0.9rem;
+    color: light-dark(
+        var(--mantine-color-dark-3),
+        var(--mantine-color-gray-6)
+    );
+}
+
+.dateTimeRuleExtraInfo {
+    font-size: 0.8rem;
+    color: light-dark(
+        var(--mantine-color-dark-6),
+        var(--mantine-color-gray-4)
+    );
+}
+
+.dateTimeItem {
+    background-color: light-dark(
+        var(--mantine-color-white),
+        var(--mantine-color-dark-7)
+    );
+
+    &:hover {
+        background-color: light-dark(
+            var(--mantine-color-gray-1),
+            var(--mantine-color-dark-9)
+        );
+    }
+}
+
+.dateTimeDragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

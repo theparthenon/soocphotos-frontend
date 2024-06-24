@@ -1,0 +1,129 @@
+.scrollscrubbertarget {
+    overflow: auto;
+    height: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+}
+
+.scrollscrubbertarget::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollscrubber {
+    width: 28px;
+    right: 0;
+    position: fixed!important;
+    user-select: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    z-index: 101;
+    background-size: 4px 100%;
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-image: linear-gradient(
+        light-dark(
+            var(--mantine-color-gray-6),
+            var(--mantine-color-dark-2)
+        ),
+        light-dark(
+            var(--mantine-color-gray-6),
+            var(--mantine-color-dark-2)
+        )
+    );
+}
+
+.scrollscrubber-background-layer {
+    width: 28px;
+    right: 0;
+    position: fixed!important;
+    opacity: 0.9;
+    z-index: 100;
+    background-color: light-dark(
+        var(--mantine-color-gray-0),
+        var(--mantine-color-dark-8)
+    );
+}
+
+.scrollscrubber-badge {
+    background-color: light-dark(
+        var(--mantine-color-gray-1),
+        var(--mantine-color-dark-5)
+    );
+    color: light-dark(
+        var(--mantine-color-gray-7),
+        var(--mantine-color-dark-0)
+    );
+    border-color: light-dark(
+        var(--mantine-color-gray-3),
+        var(--mantine-color-dark-3)
+    );
+    position: absolute;
+    right: rem(25px);
+}
+
+.scrollscrubber-marker {
+    background-color: light-dark(
+        --var(-mantine-color-gray-1),
+        --var(-mantine-color-dark-5)
+    );
+    color: light-dark(
+        --var(-mantine-color-gray-7),
+        --var(-mantine-color-dark-0)
+    );
+    border-color: light-dark(
+        --var(-mantine-color-gray-3),
+        --var(-mantine-color-dark-3)
+    );
+    position: absolute;
+    right: 30px;
+    margin-top: -2px;
+}
+
+.scrollscrubber-marker-dot {
+    background-color: light-dark(
+        var(--mantine-color-gray-0),
+        var(--mantine-color-dark-6)
+    );
+    box-shadow: 0 0 0 2px light-dark(
+        var(--mantine-color-gray-6),
+        var(--mantine-color-dark-2)
+    );
+    position: absolute;
+    right: 12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    margin-top: -2px;
+}
+
+.scrollscrubber-current-position {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    right: 11px;
+    margin-top: -2px;
+    background-color: light-dark(
+        var(--mantine-color-gray-0),
+        var(--mantine-color-dark-6)
+    );
+    box-shadow: 0 0 0 4px var(--mantine-color-green-6);
+}
+
+.scrollscrubber-drag-position {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    right: 11px;
+    z-index: 105;
+    background-color: light-dark(
+        var(--mantine-color-gray-0),
+        var(--mantine-color-dark-6)
+    );
+    box-shadow: 0 0 0 4px light-dark(
+        var(--mantine-color-dark-6),
+        var(--mantine-color-gray-0)
+    );
+}
