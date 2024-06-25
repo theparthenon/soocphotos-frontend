@@ -33,6 +33,7 @@
     "history": "^5.3.0",
     "i18next": "^23.11.5",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
     "librephotos-react-image-lightbox": "^1.0.0",
     "lodash": "^4.17.21",
     "lottie-web": "^5.12.2",
