@@ -7,8 +7,6 @@ const UserAlbumResponseSchema = z.object({
   title: z.string(),
   cover_photo: PhotoSuperSimpleSchema,
   photo_count: z.number(),
-  owner: SimpleUserSchema,
-  shared_to: SimpleUserSchema.array(),
   created_on: z.string(),
   favorited: z.boolean(),
 });

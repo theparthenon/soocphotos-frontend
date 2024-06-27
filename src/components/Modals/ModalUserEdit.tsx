@@ -41,17 +41,7 @@ type Props = Readonly<{
     return result;
   };
 
-  export function ModalUserEdit(props: Props) {
-    const {
-      isOpen,
-      updateAndScan,
-      selectedNodeId,
-      onRequestClose: closeModal,
-      userList,
-      createNew,
-      firstTimeSetup,
-      userToEdit,
-    } = props;
+  export function ModalUserEdit({ updateAndScan = false, selectedNodeId = "", firstTimeSetup = false, isOpen, onRequestClose: closeModal, userToEdit, userList, createNew }: Props) {
     const [treeData, setTreeData] = useState<DirTree[]>([]);
     const [userPassword, setUserPassword] = useState("");
     const [newPasswordIsValid, setNewPasswordIsValid] = useState(true);
@@ -249,9 +239,3 @@ type Props = Readonly<{
       </Modal>
     );
   }
-
-  ModalUserEdit.defaultProps = {
-    updateAndScan: false,
-    selectedNodeId: "",
-    firstTimeSetup: false,
-  };

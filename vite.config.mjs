@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -32,11 +33,16 @@ function reactVirtualized() {
 }
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), reactVirtualized()],
+  plugins: [react(), tsconfigPaths(), reactVirtualized(), sentryVitePlugin({
+    org: "theparthenon",
+    project: "javascript-react"
+  })],
+
   server: {
     host: "0.0.0.0",
     port: 3000,
   },
+
   css: {
     preprocessorOptions: {
       scss: {
@@ -44,4 +50,8 @@ export default defineConfig({
       },
     },
   },
+
+  build: {
+    sourcemap: true
+  }
 });

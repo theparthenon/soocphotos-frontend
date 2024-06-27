@@ -39,7 +39,7 @@ export default function Header({opened, toggle}: Props) {
                         />
                     </Grid.Col>
                     <Grid.Col span={3}>
-                        { /* <Search />  */ }
+                        <Search />
                     </Grid.Col>
                     <Grid.Col span={1}>
                     <Group justify="right" style={{ height: "100%" }}>

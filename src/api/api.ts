@@ -1,9 +1,9 @@
-import type { BaseQueryResult } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import type { BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { BaseQueryResult } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { BaseQueryFn, FetchArgs } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import type { IApiDeleteUserPost, IApiLoginPost, IApiLoginResponse } from '@/@types/auth';
+import type { IApiDeleteUserPost, IApiLoginPost, IApiLoginResponse } from "@/@types/auth";
 import type {
   IClusterFacesResponse,
   IDeleteFacesRequest,
@@ -16,32 +16,32 @@ import type {
   ISetFacesLabelRequest,
   ISetFacesLabelResponse,
   ITrainFacesResponse,
-} from '@/@types/faces';
-import { tokenReceived } from '@/store/auth/authSlice';
-import type { RootState } from '@/store/store';
-import type { IUploadOptions, IUploadResponse } from '@/@types/upload';
-import { UploadExistResponse, UploadResponse } from '@/@types/upload';
-import type { IManageUser, IUser, UserList } from '@/@types/user';
-import { ApiUserListResponseSchema, ManageUser, UserSchema } from '@/@types/user';
+} from "@/@types/faces";
+import { tokenReceived } from "@/store/auth/authSlice";
+import type { RootState } from "@/store/store";
+import type { IUploadOptions, IUploadResponse } from "@/@types/upload";
+import { UploadExistResponse, UploadResponse } from "@/@types/upload";
+import type { IManageUser, IUser, UserList } from "@/@types/user";
+import { ApiUserListResponseSchema, ManageUser, UserSchema } from "@/@types/user";
 import type {
   IGenerateEventAlbumsTitlesResponse,
   ImageTagResponseType,
   ServerStatsResponseType,
   StorageStatsResponseType,
-} from '@/@types/utils';
-import type { IWorkerAvailabilityResponse } from '@/@types/job';
-import { API_URL, EndpointUrls, Endpoints } from '@/constants/api.constant';
-import { Server } from './apiClient';
+} from "@/@types/utils";
+import type { IWorkerAvailabilityResponse } from "@/@types/job";
+import { API_URL, EndpointUrls, Endpoints } from "@/constants/api.constant";
+import { Server } from "./apiClient";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/api/',
-  credentials: 'include',
+  baseUrl: "/api/",
+  credentials: "include",
 
   prepareHeaders: (headers, { getState, endpoint }) => {
     const { user } = getState() as RootState;
     const { access } = (getState() as RootState).auth;
-    if (access !== null && user && endpoint !== 'refresh') {
-      headers.set('Authorization', `Bearer ${access.token}`);
+    if (access !== null && user && endpoint !== "refresh") {
+      headers.set("Authorization", `Bearer ${access.token}`);
     }
     return headers;
   },
@@ -62,7 +62,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       const refreshResult = await baseQuery(
         {
           url: EndpointUrls.authRefresh,
-          method: 'POST',
+          method: "POST",
           body: {
             refresh: refreshToken,
           },
@@ -85,14 +85,14 @@ export const baseQueryWithReauth: BaseQueryFn<
 };
 
 export const api = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Albums', 'Faces', 'PeopleAlbums', 'Photos', 'UserList', 'UserSelfDetails'],
+  tagTypes: ["Albums", "Faces", "PeopleAlbums", "Photos", "UserList", "UserSelfDetails"],
   endpoints: (builder) => ({
     [Endpoints.login]: builder.mutation<IApiLoginResponse, IApiLoginPost>({
       query: (body) => ({
         url: EndpointUrls.authObtain,
-        method: 'POST',
+        method: "POST",
         body,
       }),
       transformResponse: (result: BaseQueryResult<any>) => {
@@ -111,34 +111,34 @@ export const api = createApi({
       transformResponse: (response: string) => JSON.parse(response),
     }),
     [Endpoints.fetchUserSelfDetails]: builder.query<IUser, string>({
-      query: (userId) => EndpointUrls.user + userId + '/',
+      query: (userId) => EndpointUrls.user + userId + "/",
       transformResponse: (response: string) => UserSchema.parse(response),
-      providesTags: (result, error, id) => [{ type: 'UserSelfDetails' as const, id }],
+      providesTags: (result, error, id) => [{ type: "UserSelfDetails" as const, id }],
     }),
     [Endpoints.fetchUserList]: builder.query<UserList, void>({
       query: () => ({
         url: EndpointUrls.user,
-        method: 'GET',
+        method: "GET",
       }),
       transformResponse: (response: string) => ApiUserListResponseSchema.parse(response).results,
-      providesTags: ['UserList'],
+      providesTags: ["UserList"],
     }),
     [Endpoints.manageUpdateUser]: builder.mutation<IManageUser, IManageUser>({
       query: (body) => ({
-        method: 'PATCH',
+        method: "PATCH",
         body,
-        url: EndpointUrls.userManage + body.id + '/',
+        url: EndpointUrls.userManage + body.id + "/",
       }),
       transformResponse: (response) => ManageUser.parse(response),
-      invalidatesTags: ['UserList'],
+      invalidatesTags: ["UserList"],
     }),
     [Endpoints.deleteUser]: builder.mutation<any, IApiDeleteUserPost>({
       query: (body) => ({
-        method: 'DELETE',
+        method: "DELETE",
         body,
-        url: EndpointUrls.userDelete + body.id + '/',
+        url: EndpointUrls.userDelete + body.id + "/",
       }),
-      invalidatesTags: ['UserList'],
+      invalidatesTags: ["UserList"],
     }),
     [Endpoints.uploadExists]: builder.query<boolean, string>({
       query: (hash) => EndpointUrls.photosExists + hash,
@@ -147,17 +147,17 @@ export const api = createApi({
     [Endpoints.uploadFinished]: builder.mutation<void, FormData>({
       query: (form_data) => ({
         url: EndpointUrls.tasksUploadComplete,
-        method: 'POST',
+        method: "POST",
         body: form_data,
       }),
     }),
     [Endpoints.upload]: builder.mutation<IUploadResponse, IUploadOptions>({
       query: (options) => ({
         url: EndpointUrls.tasksUpload,
-        method: 'POST',
+        method: "POST",
         body: options.form_data,
         headers: {
-          'Content-Range': `bytes ${options.offset}-${options.offset + options.chunk_size - 1}/${options.chunk_size}`,
+          "Content-Range": `bytes ${options.offset}-${options.offset + options.chunk_size - 1}/${options.chunk_size}`,
         },
       }),
       transformResponse: (response: IUploadResponse) => UploadResponse.parse(response),
@@ -165,7 +165,7 @@ export const api = createApi({
     [Endpoints.worker]: builder.query<IWorkerAvailabilityResponse, void>({
       query: () => ({
         url: EndpointUrls.tasksQueueAvailability,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     [Endpoints.incompleteFaces]: builder.query<
@@ -175,13 +175,13 @@ export const api = createApi({
       query: ({ inferred = false }) => ({
         url: `${EndpointUrls.facesIncomplete}?inferred=${inferred}`,
       }),
-      providesTags: ['Faces'],
+      providesTags: ["Faces"],
     }),
     [Endpoints.fetchFaces]: builder.query<IPersonFaceListResponse, IPersonFaceListRequest>({
-      query: ({ person, page = 0, inferred = false, orderBy = 'confidence' }) => ({
+      query: ({ person, page = 0, inferred = false, orderBy = "confidence" }) => ({
         url: `${EndpointUrls.faces}/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
       }),
-      providesTags: ['Faces'],
+      providesTags: ["Faces"],
     }),
     [Endpoints.clusterFaces]: builder.query<IClusterFacesResponse, void>({
       query: () => ({
@@ -196,13 +196,13 @@ export const api = createApi({
     [Endpoints.trainFaces]: builder.mutation<ITrainFacesResponse, void>({
       query: () => ({
         url: EndpointUrls.tasksFacesTrain,
-        method: 'POST',
+        method: "POST",
       }),
     }),
     [Endpoints.deleteFaces]: builder.mutation<IDeleteFacesResponse, IDeleteFacesRequest>({
       query: ({ faceIds }) => ({
         url: EndpointUrls.tasksFacesDelete,
-        method: 'POST',
+        method: "POST",
         body: { face_ids: faceIds },
       }),
     }),
@@ -212,7 +212,7 @@ export const api = createApi({
     >({
       query: ({ faceIds, personName }) => ({
         url: EndpointUrls.tasksFacesLabel,
-        method: 'POST',
+        method: "POST",
         body: { person_name: personName, face_ids: faceIds },
       }),
     }),

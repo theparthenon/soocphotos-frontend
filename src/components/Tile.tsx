@@ -5,19 +5,16 @@ import { Image } from "@mantine/core";
 
 import { serverAddress } from "@/api/apiClient";
 
-type DefaultProps = {
+type Props = {
+  width: number;
+  height: number;
+  image_hash: string;
   style: CSSProperties;
   video: boolean;
   onClick: (e: MouseEventHandler<HTMLElement>) => void;
 };
 
-type Props = {
-  width: number;
-  height: number;
-  image_hash: string;
-} & Partial<DefaultProps>;
-
-export function Tile({ video, width, height, style, image_hash }: Props) {
+export function Tile({ video = false, width, height, style, image_hash }: Props) {
   if (video) {
     return (
       <video

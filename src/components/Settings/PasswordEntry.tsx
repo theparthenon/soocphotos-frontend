@@ -8,9 +8,7 @@ type Props = Readonly<{
   closing?: boolean;
 }>;
 
-export function PasswordEntry(props: Props): JSX.Element {
-  const { closing, createNew, onValidate } = props;
-
+export function PasswordEntry({createNew = false, onValidate, closing = false }: Props): JSX.Element {
   const [editPasswordMode, setEditPasswordMode] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
@@ -98,8 +96,3 @@ export function PasswordEntry(props: Props): JSX.Element {
     </Stack>
   );
 }
-
-PasswordEntry.defaultProps = {
-  createNew: false,
-  closing: false,
-};

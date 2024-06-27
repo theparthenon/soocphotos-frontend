@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/store/store';
 export function ChunkedUploadButton() {
     const [totalSize, setTotalSize] = useState(1);
     const [currentSize, setCurrentSize] = useState(1);
-    const user_id = useAppSelector(state => state.auth.access.user_id);
+    const { userSelfDetails } = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const chunkSize = 1000000; // 1MB chunks because of default of nginx
 
@@ -56,13 +56,13 @@ export function ChunkedUploadButton() {
       };
 
       const checkIfAlreadyUploaded = async (hash: string) =>
-        dispatch(api.endpoints.uploadExists.initiate(hash + user_id)).then(r => r.data);
+        dispatch(api.endpoints.uploadExists.initiate(hash + userSelfDetails.id)).then(r => r.data);
 
       const uploadFinished = async (file: File, uploadId: string) => {
         const formData = new FormData();
         formData.append("upload_id", uploadId);
         formData.append("md5", await calculateMD5(file));
-        formData.append("user", user_id.toString());
+        formData.append("user", userSelfDetails.id.toString());
         formData.append("filename", file.name);
         dispatch(api.endpoints.uploadFinished.initiate(formData));
       };
@@ -90,7 +90,7 @@ export function ChunkedUploadButton() {
         // FIX-ME: This is empty
         formData.append("md5", await calculateMD5Blob(chunk));
         formData.append("offset", offset.toString());
-        formData.append("user", user_id.toString());
+        formData.append("user", userSelfDetails.id.toString());
         return dispatch(
           api.endpoints.upload.initiate({
             form_data: formData,

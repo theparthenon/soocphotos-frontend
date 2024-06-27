@@ -28,7 +28,7 @@ import {
     selectedFaces: any[];
   }>;
 
-  export function ModalPersonEdit(props: Props) {
+  export function ModalPersonEdit({ isOpen, onRequestClose, resetGroups, selectedFaces }: Props) {
     const [newPersonName, setNewPersonName] = useState("");
 
     const matches = useMediaQuery("(min-width: 700px)");
@@ -36,7 +36,6 @@ import {
     const { data: people } = useFetchPeopleAlbumsQuery();
 
     const dispatch = useAppDispatch();
-    const { isOpen, onRequestClose, selectedFaces, resetGroups } = props;
     let filteredPeopleList = people;
 
     if (newPersonName.length > 0) {
@@ -150,7 +149,3 @@ import {
       </Modal>
     );
   }
-
-  ModalPersonEdit.defaultProps = {
-    resetGroups: () => {},
-  };

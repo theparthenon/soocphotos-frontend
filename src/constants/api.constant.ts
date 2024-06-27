@@ -7,7 +7,7 @@ export const LOCALE = "en-US";
 export enum EndpointUrls {
   // Albums - Auto
   albumsAuto = "/album/auto/",
-  albumsAutoList = "/album/auto/list/",
+  albumsAutoList = "/album/auto/",
   // Albums - Date
   albumsDate = "/album/date/",
   albumsDateList = "/album/date/",
@@ -15,10 +15,10 @@ export enum EndpointUrls {
   albumsPeople = "/album/people/",
   // Albums - Place
   albumsPlace = "/album/place/",
-  albumsPlaceList = "/album/place/list/",
+  albumsPlaceList = "/album/place/",
   // Albums - Thing
   albumsThing = "/album/thing/",
-  albumsThingList = "/album/thing/list/",
+  albumsThingList = "/album/thing/",
   // Albums - User
   albumsUser = "/albums/",
   albumsUserEdit = "/albums/edit/",
@@ -75,8 +75,8 @@ export enum EndpointUrls {
   tasksAutoAlbumGenerate = "/tasks/auto-album/generate/",
   tasksAutoAlbumGenerateTitle = "/tasks/auto-album/generate/title/",
   tasksQueueAvailability = "/queue-availability/",
-  tasksRulesDefault = "/tasks/rules/default/",
-  tasksRulesPredefined = "/tasks/rules/predefined/",
+  tasksRulesDefault = "/rules/default/",
+  tasksRulesPredefined = "/rules/predefined/",
   tasksSearchExampleTerms = "/search-term-examples/",
   tasksUpload = "/upload/",
   tasksUploadComplete = "/upload/complete/",
