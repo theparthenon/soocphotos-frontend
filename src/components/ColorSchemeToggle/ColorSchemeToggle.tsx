@@ -13,7 +13,11 @@ export default function ColorSchemeToggle() {
   const toggleColorScheme = useCallback(
     value => {
       const nextColorScheme = value || (colorSchemeCookie === "dark" ? "light" : "dark");
-      cookies.set("mantine-color-scheme", nextColorScheme, { maxAge: 60 * 60 * 24 * 356 });
+      cookies.set(
+        "mantine-color-scheme",
+        nextColorScheme,
+        { maxAge: 60 * 60 * 24 * 356, sameSite: "strict" }
+      );
       setColorScheme(nextColorScheme);
       setColorSchemeCookie(nextColorScheme);
     },

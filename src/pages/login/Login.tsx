@@ -44,9 +44,11 @@ export default function Login(): JSX.Element {
     login({ username: form.values.username.toLowerCase(), password: form.values.password });
   }
 
-  if (isAuth) {
-    navigate(from);
-  }
+  useEffect(() => {
+    if (isAuth) {
+      navigate(from);
+    }
+  }, []);
 
   return (
     <div className="loginPage">

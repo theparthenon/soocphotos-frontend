@@ -1,6 +1,5 @@
 import { IconPhoto as Photo } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { PigPhoto, PhotoGroup } from "@/@types/photos";
 import { useFetchDateAlbumQuery, useFetchDateAlbumsQuery } from "@/api/endpoints/albums/date";

@@ -48,7 +48,22 @@ type SelectionState = {
   selectMode: boolean;
 };
 
-function PhotoListViewComponent(props: Props) {
+function PhotoListViewComponent(
+  {
+    title = "",
+    loading = false,
+    icon = "",
+    photoset = [],
+    idx2hash = [],
+    selectable = false,
+    numberOfItems = 0,
+    updateGroups = "",
+    updateItems = "",
+    date = "",
+    dayHeaderPrefix = "",
+    header = "",
+    additionalSubHeader = ""
+  }: Props) {
   const { height } = useViewportSize();
   const pigRef = useRef<Pig>(null);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(1);
@@ -65,21 +80,6 @@ function PhotoListViewComponent(props: Props) {
 
   const route = useAppSelector(store => store.router);
   const userSelfDetails = useAppSelector(store => store.user.userSelfDetails);
-  const {
-    updateGroups,
-    title,
-    loading,
-    icon,
-    photoset,
-    idx2hash,
-    selectable,
-    numberOfItems,
-    updateItems,
-    date,
-    dayHeaderPrefix,
-    header,
-    additionalSubHeader,
-  } = props;
 
   const isDateView = photoset !== idx2hash;
   const photos = isDateView ? formatDateForPhotoGroups(photoset) : photoset;
@@ -385,16 +385,6 @@ function PhotoListViewComponent(props: Props) {
     </div>
   );
 }
-
-PhotoListViewComponent.defaultProps = {
-  numberOfItems: null,
-  updateItems: null,
-  date: null,
-  dayHeaderPrefix: null,
-  header: null,
-  additionalSubHeader: null,
-  updateGroups: null,
-};
 
 export const PhotoListView = React.memo(
   PhotoListViewComponent,

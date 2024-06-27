@@ -1,5 +1,4 @@
 import { Tooltip } from "@mantine/core";
-import { t } from "i18next";
 import { DateTime } from "luxon";
 import React from "react";
 
@@ -17,7 +16,7 @@ export function FaceTooltip({ tooltipOpened, cell, children }: Props) {
 
   const confidencePercentageLabel =
     activeTab === "inferred"
-      ? t("settings.confidencepercentage", { percentage: (cell.person_label_probability * 100).toFixed(1) })
+      ? "Confidence: " + (cell.person_label_probability * 100).toFixed(1) + "%"
       : null;
 
   const dateTimeLabel = DateTime.fromISO(cell.timestamp).isValid

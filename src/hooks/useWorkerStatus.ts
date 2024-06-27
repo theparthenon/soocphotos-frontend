@@ -7,7 +7,6 @@ import { notification } from '@/services/notifications';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { selectUserSelfDetails } from '@/store/user/userSelectors';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export enum WorkerState {
   SET_WORKER_AVAILABILITY = 'set-worker-availability',
@@ -15,6 +14,7 @@ export enum WorkerState {
 }
 
 const defaultJobDetail: IJobDetailSchema = {
+  id: 0,
   job_id: '',
   queued_at: '',
   finished: false,
@@ -42,7 +42,6 @@ export function useWorkerStatus(): {
   workerRunningJob: IJobDetailSchema;
 } {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
   const workerRunningJob = useAppSelector((state) => state.worker.job_detail) ?? defaultJobDetail;
 
   const [hadPreviousJob, setHadPreviousJob] = useState(false);
@@ -96,7 +95,6 @@ export function useWorkerStatus(): {
     dispatch,
     hadPreviousJob,
     previousJob?.job_detail?.job_type_str,
-    t,
     user.id,
     user.username,
     workerRunningJob,
