@@ -194,7 +194,6 @@ import {
                 <Select
                   searchable
                   data={MAP_API_PROVIDERS}
-                  dropdownPosition="bottom"
                   value={mapApiProvider}
                   onChange={provider => {
                     const value = provider || "";
@@ -268,7 +267,7 @@ import {
                 />
               </Grid.Col>
               <Grid.Col span={8}>
-                <Stack spacing={0}>
+                <Stack gap={0}>
                   <Text>Heavyweight Processes</Text>
                   <Text fz="sm" color="dimmed">
                      Increase the number of picture-scanning workers beyond 1, but be prepared to use 800 MB memory for each additional one.

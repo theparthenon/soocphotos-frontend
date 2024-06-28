@@ -201,6 +201,15 @@ import {
 
             <Stack align="flex-start">
 
+              {auth.access.is_admin ? (
+                <TextInput
+                  type="text"
+                  label="Scan Directory"
+                  disabled
+                  placeholder={userSelfDetails.scan_directory}
+                />
+              ) : null}
+
               <Radio.Group
                 label="Color Scheme"
                 value={dark ? "1" : "0"}
@@ -233,6 +242,7 @@ import {
                 color="green"
                 onClick={() => {
                   const newUserData = userSelfDetails;
+                  delete newUserData.scan_directory;
                   delete newUserData.avatar;
                   updateUser(newUserData);
                   setIsOpenUpdateDialog(false);

@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { jwtDecode } from 'jwt-decode';
-import { Cookies } from 'react-cookie';
-import { persistReducer } from 'redux-persist';
-import { createFilter } from 'redux-persist-transform-filter';
-import storage from 'redux-persist/es/storage';
+import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
+import { Cookies } from "react-cookie";
+import { persistReducer } from "redux-persist";
+import { createFilter } from "redux-persist-transform-filter";
+import storage from "redux-persist/es/storage";
 
 // eslint-disable-next-line import/no-cycle
-import { api } from '@/api/api';
-import { AuthErrorSchema } from '@/@types/auth';
-import type { IAuthState, IToken } from '@/@types/auth';
+import { api } from "@/api/api";
+import { AuthErrorSchema } from "@/@types/auth";
+import type { IAuthState, IToken } from "@/@types/auth";
 
 const initialState: IAuthState = {
   access: null,
@@ -17,7 +17,7 @@ const initialState: IAuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     tokenReceived: (state, { payload }) => ({
@@ -29,7 +29,7 @@ const authSlice = createSlice({
     }),
     logout: () => {
       const cookies = new Cookies();
-      cookies.remove('jwt');
+      cookies.remove("jwt");
       return initialState;
     },
     clearError: (state) => ({ ...state, error: null }),
@@ -55,14 +55,14 @@ const authSlice = createSlice({
   },
 });
 
-const persistedAccessToken = createFilter('access');
-const persistedRefreshToken = createFilter('refresh');
+const persistedAccessToken = createFilter("access");
+const persistedRefreshToken = createFilter("refresh");
 export const authReducer = persistReducer(
   {
-    key: 'polls',
+    key: "polls",
     storage,
     transforms: [persistedAccessToken, persistedRefreshToken],
-    whitelist: ['access', 'refresh'],
+    whitelist: ["access", "refresh"],
   },
   authSlice.reducer
 );

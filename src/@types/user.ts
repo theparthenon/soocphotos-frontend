@@ -5,6 +5,7 @@ export const UserSchema = z.object({
   id: z.number(),
   username: z.string(),
   email: z.string(),
+  scan_directory: z.string().optional(),
   confidence: z.number(),
   confidence_person: z.number(),
   transcode_videos: z.boolean(),
@@ -43,6 +44,7 @@ export const ManageUser = z.object({
   first_name: z.string().nullable(),
   last_name: z.string().nullable(),
   password: z.string().optional(),
+  scan_directory: z.string().optional(),
 });
 
 export const SimpleUser = z.object({

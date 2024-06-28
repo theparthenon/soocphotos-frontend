@@ -80,7 +80,7 @@ type Props = Readonly<{
       );
     }
 
-    if (!loading && auth.access && isScanView() && auth.access.is_admin  && numPhotosetItems < 1) {
+    if (!loading && auth.access && isScanView() && auth.access.is_admin && !user.scan_directory  && numPhotosetItems < 1) {
       return (
         <Stack align="center">
           <Title order={3}>To begin using, edit your user's scan directory.</Title>

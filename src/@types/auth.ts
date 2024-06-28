@@ -22,6 +22,7 @@ export const TokenSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   confidence: z.number(),
+  scan_directory: z.string().nullable(),
 });
 
 export const AuthStateSchema = z.object({

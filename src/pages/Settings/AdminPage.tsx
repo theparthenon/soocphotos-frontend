@@ -83,6 +83,7 @@ function UserTable() {
                 </span>
               </td>
               <td>{user.username}</td>
+              <td>{user.scan_directory ? user.scan_directory : "Not set"}</td>
               {matches && <td>{user.confidence ? user.confidence : "Not set"}</td>}
               {matches && <td>{user.photo_count}</td>}
               {matches && <td>{DateTime.fromISO(user.date_joined).setLocale(LOCALE).toRelative()}</td>}

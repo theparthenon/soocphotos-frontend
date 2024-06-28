@@ -33,6 +33,7 @@ function reactVirtualized() {
 }
 
 export default defineConfig({
+  base: "/",
   plugins: [react(), tsconfigPaths(), reactVirtualized(), sentryVitePlugin({
     org: "theparthenon",
     project: "javascript-react"
