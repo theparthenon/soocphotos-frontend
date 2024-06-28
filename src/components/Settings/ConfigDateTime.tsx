@@ -1,9 +1,11 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-import { Button, CloseButton, Group, ScrollArea, Table, Title } from "@mantine/core";
+/*
+TODO: 6/28: Add drag and drop to date time rules.
+*/
+import { Badge, Button, CloseButton, Flex, Group, List, ScrollArea, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowBackUp as ArrowBackUp, IconCodePlus as CodePlus } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+
 
 import { useFetchPredefinedRulesQuery } from "@/api/api";
 import { ModalConfigDatetime } from "@/components/Modals/ModalConfigDatetime";
@@ -58,13 +60,6 @@ export function ConfigDateTime({ value, onChange }: ConfigDateTimeProps) {
     onChange(JSON.stringify(updatedRules));
   }
 
-  function reorderRules(from: number, to: number) {
-    const tmp = cloneRules(userRules);
-    [tmp[from], tmp[to]] = [tmp[to], tmp[from]];
-    setUserRules(tmp);
-    onChange(JSON.stringify(tmp));
-  }
-
   function resetToDefaultRules() {
     if (!allRules) {
       return;
@@ -76,23 +71,22 @@ export function ConfigDateTime({ value, onChange }: ConfigDateTimeProps) {
   }
 
   const items = userRules.map((rule, index) => (
-    <Draggable key={rule.id} index={index} draggableId={rule.id.toString()}>
-      {provided => (
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        <tr className="dateTimeItem" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-          <td>
-            <strong>
-              {rule.name} (ID:{rule.id})
-            </strong>
-            <div className="dateTimeRuleType">Rule type: {rule.rule_type}</div>
-            {getRuleExtraInfo(rule)}
-          </td>
-          <td width={40}>
-            <CloseButton title="Delete Rule" size="md" onClick={() => deleteRule(rule)} />
-          </td>
-        </tr>
-      )}
-    </Draggable>
+    <List.Item key={rule.id} className="dateTimeItem">
+      <Flex
+        gap="md"
+        justify="flex-start"
+        align="center"
+        direction="row"
+      >
+          <CloseButton title="Delete Rule" size="sm" onClick={() => deleteRule(rule)} />
+          <strong>
+            {rule.name} (ID:{rule.id})
+          </strong>
+          <Badge variant="light" size="xs" className="dateTimeRuleType">
+            {rule.rule_type}
+          </Badge>
+      </Flex>
+    </List.Item>
   ));
 
   return (
@@ -118,19 +112,9 @@ export function ConfigDateTime({ value, onChange }: ConfigDateTimeProps) {
       </Group>
 
       <ScrollArea>
-        <DragDropContext onDragEnd={result => reorderRules(result.destination?.index || 0, result.source.index)}>
-          <Table>
-            <Droppable droppableId="dnd-list" direction="vertical">
-              {provided => (
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                <tbody {...provided.droppableProps} ref={provided.innerRef}>
-                  {items}
-                  {provided.placeholder}
-                </tbody>
-              )}
-            </Droppable>
-          </Table>
-        </DragDropContext>
+        <List className="dateTimeList">
+          {items}
+        </List>
       </ScrollArea>
 
       <ModalConfigDatetime

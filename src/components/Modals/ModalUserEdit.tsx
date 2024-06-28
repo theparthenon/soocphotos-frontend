@@ -95,10 +95,12 @@ type Props = Readonly<{
         first_name: "",
         last_name: "",
         password: "",
+        scan_directory: "",
       },
       validate: {
         email: value => validateEmail(value),
         username: value => validateUsername(value),
+        scan_directory: value => validatePath(value),
       },
     });
 
@@ -122,11 +124,17 @@ type Props = Readonly<{
 
     useEffect(() => {
       if (userToEdit) {
+        if (userToEdit.scan_directory) {
+          setScanDirectoryPlaceholder(userToEdit.scan_directory);
+        } else {
+          setScanDirectoryPlaceholder("not set");
+        }
         form.setValues({
           username: userToEdit.username,
           email: userToEdit.email,
           first_name: userToEdit.first_name,
           last_name: userToEdit.last_name,
+          scan_directory: userToEdit.scan_directory,
           password: userPassword || "",
         });
       } else {
@@ -134,11 +142,18 @@ type Props = Readonly<{
       }
     }, [userToEdit]);
 
+    useEffect(() => {
+      if (form.values.scan_directory) {
+        setScanDirectoryPlaceholder(form.values.scan_directory);
+      }
+    }, [form.values.scan_directory]);
+
     const nodeClicked = (event: Event, rowInfo: any) => {
       if (inputRef.current) {
         const path = rowInfo.node.absolute_path;
         inputRef.current.value = path;
         fetchDirectoryTree(path);
+        form.setFieldValue("scan_directory", path);
       }
     };
 
@@ -148,8 +163,15 @@ type Props = Readonly<{
       if (!newPasswordIsValid) {
         return;
       }
-      const { email, username, first_name: firstName, last_name: lastName } = form.values;
+      const { email, username, first_name: firstName, last_name: lastName, scan_directory: scanDirectory } = form.values;
       const newUserData = { ...userToEdit };
+
+      if (scanDirectory) {
+        newUserData.scan_directory = scanDirectory;
+      }
+      if (!newUserData.scan_directory) {
+        delete newUserData.scan_directory;
+      }
 
       newUserData.email = email;
       newUserData.first_name = firstName;
@@ -162,6 +184,15 @@ type Props = Readonly<{
         newUserData.username = username;
       }
 
+      if (updateAndScan) {
+        updateUser(newUserData).then(() => {
+          if (newUserData.scan_directory) {
+            scanPhotos();
+          }
+        });
+      } else {
+        updateUser(newUserData);
+      }
       closeModal();
     };
 
@@ -228,6 +259,46 @@ type Props = Readonly<{
             </SimpleGrid>
             <PasswordEntry createNew={createNew} onValidate={onPasswordValidate} closing={closing} />
           </Box>
+          {!createNew && (
+            <>
+              <Title order={5}>Set the scan directory for the user</Title>
+              <Text size="sm">
+                When the user &quot;
+                {form.values.username ? form.values.username : "\u2026"}&quot; clicks on the 'scan photos' button, photos in the directory that you specify here will be imported under the user's account
+              </Text>
+              <Space h="md" />
+              <Grid grow>
+                <Grid.Col span={9}>
+                  <TextInput
+                    label="User's current directory"
+                    labelProps={{ style: { fontWeight: "bold" } }}
+                    ref={inputRef}
+                    required={firstTimeSetup}
+                    placeholder={scanDirectoryPlaceholder}
+                    name="scan_directory"
+                    /* eslint-disable-next-line react/jsx-props-no-spreading */
+                    {...form.getInputProps("scan_directory")}
+                  />
+                </Grid.Col>
+              </Grid>
+              <Title order={6}>Choose a directory from below</Title>
+              <div style={{ height: "150px", overflow: "auto" }}>
+                <SortableTree
+                  innerStyle={{ outline: "none" }}
+                  canDrag={() => false}
+                  canDrop={() => false}
+                  treeData={treeData}
+                  onChange={setTreeData}
+                  theme={FileExplorerTheme}
+                  isVirtualized={false}
+                  generateNodeProps={(rowInfo: any) => ({
+                    onClick: (event: Event) => nodeClicked(event, rowInfo),
+                    className: selectedNodeId === rowInfo.node.id ? "selected-node" : undefined,
+                  })}
+                />
+              </div>
+            </>
+          )}
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button variant="default" onClick={() => closeModal()}>
               Cancel

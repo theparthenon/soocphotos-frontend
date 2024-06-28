@@ -1,9 +1,5 @@
-.dateTimeTable {
-    width: 100%;
-}
-
 .dateTimeRuleType {
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     color: light-dark(
         var(--mantine-color-dark-3),
         var(--mantine-color-gray-6)
@@ -18,7 +14,12 @@
     );
 }
 
+.dateTimeList {
+    list-style-type: none;
+}
+
 .dateTimeItem {
+    padding: rem(5px) 0;
     background-color: light-dark(
         var(--mantine-color-white),
         var(--mantine-color-dark-7)
@@ -30,11 +31,4 @@
             var(--mantine-color-dark-9)
         );
     }
-}
-
-.dateTimeDragHandle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
 }
