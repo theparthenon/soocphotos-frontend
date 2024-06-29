@@ -46,8 +46,8 @@ export function FacesCountersHoverCard({ tab, children }: Props) {
   const getLabeledCounters = () => (
     <Stack>
       <Text size="sm">
-        {labeledPersonsCount} Persons {" "}
-        {labeledFacesCount} Faces
+        {labeledPersonsCount == 1 ? "1 Person" : labeledPersonsCount + " People"} {" "}
+        ({labeledFacesCount} Faces)
       </Text>
       {labeledUnknownFacesCount !== 0 && (
         <Text size="sm">{labeledUnknownFacesCount} Unknown Faces</Text>
@@ -58,12 +58,12 @@ export function FacesCountersHoverCard({ tab, children }: Props) {
   const getInferredCounters = () => (
     <Stack>
       <Text size="sm">
-        {inferredAssumedPersonsCount} Inferred Persons{" "}
-        {inferredAssumedFacesCount} Faces
+        {inferredAssumedPersonsCount == 1 ? "1 Inferred Person" : inferredAssumedPersonsCount + " Inferred People"}{" "}
+        ({inferredAssumedFacesCount} Faces)
       </Text>
       <Text size="sm">
         {inferredClustersCount} Clusters{" "}
-        {inferredClusteredFacesCount} Faces
+        ({inferredClusteredFacesCount} Faces)
       </Text>
       {inferredUnknownFacesCount !== 0 && (
         <Text size="sm">{inferredUnknownFacesCount} Unknown Faces</Text>

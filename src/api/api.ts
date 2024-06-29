@@ -111,7 +111,7 @@ export const api = createApi({
       transformResponse: (response: string) => JSON.parse(response),
     }),
     [Endpoints.fetchUserSelfDetails]: builder.query<IUser, string>({
-      query: (userId) => EndpointUrls.user + userId + "/",
+      query: userId => EndpointUrls.user + userId + "/",
       transformResponse: (response: string) => UserSchema.parse(response),
       providesTags: (result, error, id) => [{ type: "UserSelfDetails" as const, id }],
     }),
@@ -168,18 +168,15 @@ export const api = createApi({
         method: "GET",
       }),
     }),
-    [Endpoints.incompleteFaces]: builder.query<
-      IIncompletePersonFaceListResponse,
-      IIncompletePersonFaceListRequest
-    >({
+    [Endpoints.incompleteFaces]: builder.query<IIncompletePersonFaceListResponse, IIncompletePersonFaceListRequest>({
       query: ({ inferred = false }) => ({
-        url: `${EndpointUrls.facesIncomplete}?inferred=${inferred}`,
+        url: `faces/incomplete/?inferred=${inferred}`,
       }),
       providesTags: ["Faces"],
     }),
     [Endpoints.fetchFaces]: builder.query<IPersonFaceListResponse, IPersonFaceListRequest>({
       query: ({ person, page = 0, inferred = false, orderBy = "confidence" }) => ({
-        url: `${EndpointUrls.faces}/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
+        url: `faces/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
       }),
       providesTags: ["Faces"],
     }),
@@ -191,6 +188,7 @@ export const api = createApi({
     [Endpoints.rescanFaces]: builder.query<IScanFacesResponse, void>({
       query: () => ({
         url: EndpointUrls.tasksFacesScan,
+        method: "POST",
       }),
     }),
     [Endpoints.trainFaces]: builder.mutation<ITrainFacesResponse, void>({

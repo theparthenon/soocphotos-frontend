@@ -132,6 +132,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# PNPM
+.pnpm-store
+
 # Sentry Config File
 .env.sentry-build-plugin
 src/components/.DS_Store

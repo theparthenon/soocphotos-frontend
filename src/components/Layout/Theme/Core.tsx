@@ -5,7 +5,6 @@ import Views from "@/components/Layout/Views";
 import SideBar from "@/components/Layout/Theme/SideBar";
 import Header from "./Header";
 import { LEFT_MENU_WIDTH, TOP_MENU_HEIGHT } from "@/constants/ui.constant";
-import ColorSchemeToggle from "@/components/ColorSchemeToggle/ColorSchemeToggle";
 
 export default function Theme(){
   const [opened, { toggle }] = useDisclosure();
@@ -28,7 +27,6 @@ export default function Theme(){
           </div>
         </AppShell.Main>
       </AppShell>
-      <ColorSchemeToggle />
     </>
   )
 }

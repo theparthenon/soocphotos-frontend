@@ -229,17 +229,21 @@ export default function FaceDashboard() {
     if (!lastChecked) {
       setLastChecked(cell);
       onFaceSelect({ face_id: cell.id, face_url: cell.face_url });
+
       return;
     }
+
     if (e.shiftKey) {
       const currentCellsInRowFormat = activeTab === FacesTab.enum.labeled ? labeledCellContents : inferredCellContents;
 
       const allFacesInCells = [] as any[];
+
       for (let i = 0; i < currentCellsInRowFormat.length; i++) {
         for (let j = 0; j < numEntrySquaresPerRow; j++) {
           allFacesInCells.push(currentCellsInRowFormat[i][j]);
         }
       }
+
       const start = allFacesInCells.indexOf(cell);
       const end = allFacesInCells.indexOf(lastChecked);
 
@@ -248,6 +252,7 @@ export default function FaceDashboard() {
         .filter(i => i && i.image);
       onFacesSelect(facesToSelect.map(i => ({ face_id: i.id, face_url: i.face_url })));
       setLastChecked(cell);
+
       return;
     }
     onFaceSelect({ face_id: cell.id, face_url: cell.face_url });

@@ -54,7 +54,7 @@ export function LightBox(props: Props) {
     return image ? image.id : undefined;
   };
 
-  const getPictureUrl = id => `${serverAddress}/media/thumbnails_big/${id}`;
+  const getPictureUrl = id => `${serverAddress}/media/optimized/${id}`;
 
   const isVideo = () => {
     if (getCurrentPhotodetail() === undefined || getCurrentPhotodetail().video === undefined) {

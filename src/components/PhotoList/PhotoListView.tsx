@@ -105,9 +105,9 @@ function PhotoListViewComponent(
 
   const getUrl = useCallback((url: string, pxHeight: number) => {
     if (pxHeight < 250) {
-      return `${serverAddress}/media/thumbnails/${url.split(";")[0]}`;
+      return `${serverAddress}/media/thumbnail/${url.split(";")[0]}`;
     }
-    return `${serverAddress}/media/thumbnails/${url.split(";")[0]}`;
+    return `${serverAddress}/media/thumbnail/${url.split(";")[0]}`;
   }, []);
 
   const updateSelectionState = (newState: { selectedItems: any[]; selectMode: boolean }) => {

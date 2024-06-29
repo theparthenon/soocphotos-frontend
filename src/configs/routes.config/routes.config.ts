@@ -6,9 +6,24 @@ export const publicRoutes: Routes = [...authRoute];
 
 export const protectedRoutes = [
   {
+    key: "album-explorer",
+    path: "/album/explorer",
+    component: lazy(() => import("@/pages/albums/Explorer")),
+  },
+  {
+    key: "album-viewer",
+    path: "/album/viewer",
+    component: lazy(() => import("@/pages/albums/AlbumViewer")),
+  },
+  {
     key: "albums-auto",
     path: "/albums/auto",
     component: lazy(() => import("@/pages/albums/Auto")),
+  },
+  {
+    key: "albums-auto",
+    path: "/albums/auto/:albumID",
+    component: lazy(() => import("@/pages/albums/AutoGallery")),
   },
   {
     key: "albums-people",
@@ -26,9 +41,19 @@ export const protectedRoutes = [
     component: lazy(() => import("@/pages/albums/Things")),
   },
   {
-    key: "data-face-clusters",
-    path: "/data/face-clusters",
-    component: lazy(() => import("@/pages/data/FaceClusters")),
+    key: "albums-user",
+    path: "/albums/user",
+    component: lazy(() => import("@/pages/albums/User")),
+  },
+  {
+    key: "albums-user-gallery",
+    path: "/albums/user/:albumID",
+    component: lazy(() => import("@/pages/albums/UserGallery")),
+  },
+  {
+    key: "data-face-scatter",
+    path: "/data/face-scatter",
+    component: lazy(() => import("@/pages/data/FaceScatter")),
   },
   {
     key: "data-family-tree",
@@ -41,9 +66,19 @@ export const protectedRoutes = [
     component: lazy(() => import("@/pages/data/Timeline")),
   },
   {
+    key: "data-word-cloud",
+    path: "/data/word-cloud",
+    component: lazy(() => import("@/pages/data/WordCloud")),
+  },
+  {
     key: "faces",
     path: "/faces",
     component: lazy(() => import("@/pages/faces/FaceDashboard")),
+  },
+  {
+    key: "person",
+    path: "/person/:albumID",
+    component: lazy(() => import("@/pages/albums/PersonGallery")),
   },
   {
     key: "photos",

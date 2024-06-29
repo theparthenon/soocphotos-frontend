@@ -53,7 +53,11 @@ export function FaceComponent({
     return <Avatar radius="xl" src="/thumbnail_placeholder.png" size={entrySquareSize - 10} />;
   }
   return (
-    <Box className="faceComponentBox">
+    <Box
+      className={
+        isSelected ? "faceComponentBoxSelected" : "faceComponentBox"
+      }
+    >
       <Center>
         <FaceTooltip tooltipOpened={tooltipOpened} cell={cell}>
           <Indicator

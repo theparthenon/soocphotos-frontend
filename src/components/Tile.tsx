@@ -9,19 +9,19 @@ type Props = {
   width: number;
   height: number;
   image_hash: string;
-  style: CSSProperties;
+  style?: CSSProperties;
   video: boolean;
-  onClick: (e: MouseEventHandler<HTMLElement>) => void;
+  onClick?: (e: MouseEventHandler<HTMLElement>) => void;
 };
 
-export function Tile({ video = false, width, height, style, image_hash }: Props) {
+export function Tile({ video = false, width, height, style = {}, image_hash }: Props) {
   if (video) {
     return (
       <video
         width={width}
         height={height}
         style={style}
-        src={`${serverAddress}/media/thumbnails/${image_hash}`}
+        src={`${serverAddress}/media//${image_hash}`}
         autoPlay
         muted
         loop

@@ -31,6 +31,18 @@ export const UserAlbumSchema = z.object({
 
 export type UserAlbum = z.infer<typeof UserAlbumSchema>;
 
+export const UserAlbumInfoSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  cover_photo: PhotoSuperSimpleSchema,
+  photo_count: z.number(),
+  owner: SimpleUserSchema,
+  created_on: z.string(),
+  favorited: z.boolean(),
+});
+
+export type UserAlbumInfo = z.infer<typeof UserAlbumInfoSchema>;
+
 export type DeleteUserAlbumParams = {
   id: string;
   albumTitle: string;
