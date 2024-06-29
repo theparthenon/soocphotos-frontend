@@ -1,6 +1,6 @@
 import { Box, Image, Loader } from "@mantine/core";
 import React, { useEffect, useRef } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 
 import { getAveragedCoordinates } from "@/utils/utils";
 
@@ -9,12 +9,12 @@ type Props = Readonly<{
 }>;
 
 export function LocationMap({ photos }: Props) {
-  // const mapRef = useRef<Map>(null);
+  const mapRef = useRef<Map>(null);
   const height = "200px";
 
-//   useEffect(() => {
-//     mapRef.current?.leafletElement.invalidateSize();
-//   }, [height, photos]);
+  useEffect(() => {
+    mapRef.current?.leafletElement.invalidateSize();
+  }, [height, photos]);
 
   const photosWithGPS = photos.filter(photo => photo.exif_gps_lon !== null && photo.exif_gps_lon);
   const { avgLat, avgLon } = getAveragedCoordinates(photosWithGPS);
@@ -23,7 +23,7 @@ export function LocationMap({ photos }: Props) {
     <Marker key={photo.image_hash} position={[photo.exif_gps_lat, photo.exif_gps_lon]}>
       <Popup>
         <div>
-          <Image src={photo.thumbnail} />
+          <Image src={photo.square_thumbnail} />
         </div>
       </Popup>
     </Marker>
@@ -33,12 +33,13 @@ export function LocationMap({ photos }: Props) {
     const zoom = 16;
     return (
       <Box style={{ zIndex: 2, height, padding: 0 }}>
-        <MapContainer style={{ height }} center={[avgLat, avgLon]} zoom={zoom}>
+        <Map ref={mapRef} style={{ height }} center={[avgLat, avgLon]} zoom={zoom}>
           <TileLayer
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
           />
           {markers}
-        </MapContainer>
+        </Map>
       </Box>
     );
   }

@@ -46,6 +46,11 @@ export const protectedRoutes = [
     component: lazy(() => import("@/pages/albums/Things")),
   },
   {
+    key: "albums-thing-gallery",
+    path: "/albums/thing/:albumID",
+    component: lazy(() => import("@/pages/albums/ThingsGallery")),
+  },
+  {
     key: "albums-user",
     path: "/albums/user",
     component: lazy(() => import("@/pages/albums/User")),

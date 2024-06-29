@@ -1,5 +1,5 @@
 import React from "react";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { Map, Marker, TileLayer } from "react-leaflet";
 
 import { PartialPhotoWithLocation, getAveragedCoordinates } from "@/utils/utils";
 
@@ -18,12 +18,13 @@ export function AlbumLocationMap({ photos }: Readonly<Props>) {
   if (photosWithGPS.length > 0) {
     return (
       <div style={{ padding: 0 }}>
-        <MapContainer center={[avgLat, avgLon]} zoom={6}>
+        <Map center={[avgLat, avgLon]} zoom={6}>
           <TileLayer
+            attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
           />
           {markers}
-        </MapContainer>
+        </Map>
       </div>
     );
   }
