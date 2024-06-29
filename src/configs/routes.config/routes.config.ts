@@ -21,7 +21,7 @@ export const protectedRoutes = [
     component: lazy(() => import("@/pages/albums/Auto")),
   },
   {
-    key: "albums-auto",
+    key: "albums-auto-gallery",
     path: "/albums/auto/:albumID",
     component: lazy(() => import("@/pages/albums/AutoGallery")),
   },
@@ -34,6 +34,11 @@ export const protectedRoutes = [
     key: "albums-places",
     path: "/albums/places",
     component: lazy(() => import("@/pages/albums/Places")),
+  },
+  {
+    key: "albums-place-gallery",
+    path: "/albums/place/:albumID",
+    component: lazy(() => import("@/pages/albums/PlacesGallery")),
   },
   {
     key: "albums-things",

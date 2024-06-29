@@ -82,7 +82,7 @@ export default function AlbumPlace({ height = 0 }: Props) {
       <div key={key} style={style}>
         <div style={{ padding: 5 }}>
           {place.cover_photos.slice(0, 1).map(photo => (
-            <Anchor key={index} href={`/place/${place.id}/`}>
+            <Anchor key={index} href={`/albums/place/${place.id}/`}>
               <Image
                 width={entrySquareSize - 10}
                 height={entrySquareSize - 10}
