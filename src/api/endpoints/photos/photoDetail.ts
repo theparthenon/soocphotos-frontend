@@ -1,7 +1,7 @@
 import type { Photo } from "@/@types/photos";
 import { notification } from "@/services/notifications";
 import { api } from "@/api/api";
-import { Endpoints, EndpointUrls } from "@/constants/api.constant";
+import { Endpoints } from "@/constants/api.constant";
 import { PhotoUpdateResponse, PhotoUpdateResponseSchema, StatusResponseSchema } from "@/@types/photos/photoDetail";
 import { StatusResponse } from "@/@types/photos/download";
 
@@ -14,7 +14,7 @@ export const photoDetailsApi = api.injectEndpoints({
             query: ({ id, data }) => ({
                 method: "PATCH",
                 body: data,
-                url: EndpointUrls.photosEdit + id + "/"
+                url: `photos/edit/${id}/`
             }),
             async onQueryStarted(_, { queryFulfilled, dispatch }) {
                 dispatch({ type: "EDIT_PHOTO" });
@@ -38,7 +38,7 @@ export const photoDetailsApi = api.injectEndpoints({
             query: ({ id, caption }) => ({
                 method: "POST",
                 body: { image_hash: id, caption },
-                url: EndpointUrls.tasksPhotosEditCaptionSave
+                url: "/photos/edit/caption/save/"
             }),
             async onQueryStarted({ id }, { queryFulfilled, dispatch }) {
                 const response = await queryFulfilled;
@@ -52,7 +52,7 @@ export const photoDetailsApi = api.injectEndpoints({
             query: ({ id }) => ({
                 method: "POST",
                 body: { image_hash: id },
-                url: EndpointUrls.tasksPhotosEditCaptionGenerate
+                url: "/photos/edit/caption/generate/"
             }),
             async onQueryStarted({ id }, { queryFulfilled, dispatch }) {
                 const response = await queryFulfilled;

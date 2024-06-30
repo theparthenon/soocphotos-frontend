@@ -2,7 +2,6 @@ import { Box, Group } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import _ from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Pig from "react-pig";
 import { useParams } from "react-router-dom";
 
 import { useSetPersonAlbumCoverMutation } from "@/api/endpoints/albums/people";
@@ -14,6 +13,7 @@ import { TOP_MENU_HEIGHT } from "@/constants/ui.constant";
 import { formatDateForPhotoGroups } from "@/utils/utils";
 import { ModalAlbumEdit } from "@/components/Modals/ModalAlbumEdit";
 import { LightBox } from "@/components/Lightbox/Lightbox";
+import Pig from "@/components/ReactPig";
 import { ScrollScrubber } from "@/components/ScrollScrubber";
 import { useScrollLock } from "@/components/UseScrollLock/UseScrollLock";
 import { ScrollerType } from "@/@types/scrollScrubber";
@@ -79,7 +79,6 @@ function PhotoListViewComponent(
   const [setPersonAlbumCover] = useSetPersonAlbumCoverMutation();
 
   const route = useAppSelector(store => store.router);
-  const userSelfDetails = useAppSelector(store => store.user.userSelfDetails);
 
   const isDateView = photoset !== idx2hash;
   const photos = isDateView ? formatDateForPhotoGroups(photoset) : photoset;
@@ -223,13 +222,6 @@ function PhotoListViewComponent(
   const getNumPhotos = () => (idx2hashRef.current ? idx2hashRef.current.length : 0);
 
   closeLightboxIfImageIndexIsOutOfSync();
-
-  let isUserAlbum = false;
-
-  // @ts-ignore
-  if (route.location.pathname.startsWith("/albums/")) {
-    isUserAlbum = true;
-  }
 
   return (
     <div>

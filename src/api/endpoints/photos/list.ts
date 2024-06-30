@@ -1,6 +1,6 @@
 import { PaginatedPhotosResponse, PaginatedPhotosResponseSchema } from "@/@types/photos/list";
 import { api } from "@/api/api";
-import { Endpoints, EndpointUrls } from "@/constants/api.constant";
+import { Endpoints } from "@/constants/api.constant";
 
 export const photoListApi = api.injectEndpoints({
     endpoints: builder => ({
