@@ -14,6 +14,7 @@ module.exports = {
     "import/no-cycle": "off",
     "react/jsx-props-no-spreading": "off", // some Mantine components need to use spread operator
     "react-hooks/exhaustive-deps": "off", // at this stage it is too risky to enable this
+    "import/extensions": "off",
   },
   parserOptions: {
     project: "./tsconfig.eslint.json",

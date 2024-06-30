@@ -1,9 +1,9 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import { api } from '@/api/api';
-import { EndpointUrls, Endpoints } from '@/constants/api.constant';
-import { notification } from '@/services/notifications';
-import { People, PeopleResponseSchema } from '@/@types/albums/people';
+import { api } from "@/api/api";
+import { Endpoints } from "@/constants/api.constant";
+import { notification } from "@/services/notifications";
+import { People, PeopleResponseSchema } from "@/@types/albums/people";
 
 export const peopleAlbumsApi = api
   .injectEndpoints({
@@ -17,10 +17,10 @@ export const peopleAlbumsApi = api
             text: item.name,
             video: !!item.video,
             face_count: item.face_count,
-            face_photo_url: item.face_photo_url ?? '',
-            face_url: item.face_url ?? '',
+            face_photo_url: item.face_photo_url ?? "",
+            face_url: item.face_url ?? "",
           }));
-          return _.orderBy(people, ['text', 'face_count'], ['asc', 'desc']);
+          return _.orderBy(people, ["text", "face_count"], ["asc", "desc"]);
         },
       }),
       [Endpoints.renamePersonAlbum]: builder.mutation<
@@ -29,7 +29,7 @@ export const peopleAlbumsApi = api
       >({
         query: ({ id, newPersonName }) => ({
           url: `people/${id}/`,
-          method: 'PATCH',
+          method: "PATCH",
           body: { newPersonName },
         }),
         transformResponse: (response, meta, query) => {
@@ -39,7 +39,7 @@ export const peopleAlbumsApi = api
       [Endpoints.deletePersonAlbum]: builder.mutation<void, string>({
         query: (id) => ({
           url: `people/${id}/`,
-          method: 'DELETE',
+          method: "DELETE",
         }),
         transformResponse: () => {
           notification.deletePerson();
@@ -48,7 +48,7 @@ export const peopleAlbumsApi = api
       [Endpoints.setPersonAlbumCover]: builder.mutation<void, { id: string; cover_photo: string }>({
         query: ({ id, cover_photo }) => ({
           url: `people/${id}/`,
-          method: 'PATCH',
+          method: "PATCH",
           body: { cover_photo },
         }),
         transformResponse: () => {
@@ -57,17 +57,17 @@ export const peopleAlbumsApi = api
       }),
     }),
   })
-  .enhanceEndpoints<'PeopleAlbums'>({
-    addTagTypes: ['PeopleAlbums'],
+  .enhanceEndpoints<"PeopleAlbums">({
+    addTagTypes: ["PeopleAlbums"],
     endpoints: {
       [Endpoints.fetchPeopleAlbums]: {
-        providesTags: ['PeopleAlbums'],
+        providesTags: ["PeopleAlbums"],
       },
       [Endpoints.renamePersonAlbum]: {
-        invalidatesTags: ['PeopleAlbums', 'Faces'],
+        invalidatesTags: ["PeopleAlbums", "Faces"],
       },
       [Endpoints.deletePersonAlbum]: {
-        invalidatesTags: ['PeopleAlbums', 'Faces'],
+        invalidatesTags: ["PeopleAlbums", "Faces"],
       },
     },
   });

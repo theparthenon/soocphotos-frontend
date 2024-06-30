@@ -71,6 +71,9 @@ importers:
       '@types/react-avatar-editor':
         specifier: ^13.0.2
         version: 13.0.2
+      '@vitejs/plugin-react':
+        specifier: ^4.3.1
+        version: 4.3.1(vite@5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1))
       axios:
         specifier: ^1.7.2
         version: 1.7.2
@@ -179,9 +182,15 @@ importers:
       tippy.js:
         specifier: ^6.3.7
         version: 6.3.7
+      vite:
+        specifier: ^5.3.1
+        version: 5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1)
       vite-plugin-sass:
         specifier: ^0.1.0
         version: 0.1.0
+      vite-tsconfig-paths:
+        specifier: ^4.3.2
+        version: 4.3.2(typescript@5.5.2)(vite@5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1))
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -237,9 +246,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.13.1
         version: 7.14.1(eslint@8.57.0)(typescript@5.5.2)
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -309,12 +315,6 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.5.2
-      vite:
-        specifier: ^5.3.1
-        version: 5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1)
-      vite-tsconfig-paths:
-        specifier: ^4.3.2
-        version: 4.3.2(typescript@5.5.2)(vite@5.3.2(@types/node@20.14.9)(sass@1.77.6)(terser@5.31.1))
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.9)(jsdom@24.1.0)(sass@1.77.6)(terser@5.31.1)

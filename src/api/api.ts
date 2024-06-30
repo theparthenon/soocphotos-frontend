@@ -30,7 +30,7 @@ import type {
   StorageStatsResponseType,
 } from "@/@types/utils";
 import type { IWorkerAvailabilityResponse } from "@/@types/job";
-import { API_URL, EndpointUrls, Endpoints } from "@/constants/api.constant";
+import { EndpointUrls, Endpoints } from "@/constants/api.constant";
 import { Server } from "./apiClient";
 
 const baseQuery = fetchBaseQuery({
@@ -91,7 +91,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     [Endpoints.login]: builder.mutation<IApiLoginResponse, IApiLoginPost>({
       query: (body) => ({
-        url: EndpointUrls.authObtain,
+        url: "/auth/token/obtain/",
         method: "POST",
         body,
       }),
@@ -103,21 +103,21 @@ export const api = createApi({
     }),
     [Endpoints.generateAutoAlbumTitle]: builder.query<IGenerateEventAlbumsTitlesResponse, void>({
       query: () => ({
-        url: EndpointUrls.tasksAutoAlbumGenerateTitle,
+        url: "/generate/auto-album-title/",
       }),
     }),
     [Endpoints.fetchPredefinedRules]: builder.query<any[], void>({
-      query: () => EndpointUrls.tasksRulesPredefined,
+      query: () => "/rules/predefined/",
       transformResponse: (response: string) => JSON.parse(response),
     }),
     [Endpoints.fetchUserSelfDetails]: builder.query<IUser, string>({
-      query: userId => EndpointUrls.user + userId + "/",
+      query: userId => `/user/${userId}/`,
       transformResponse: (response: string) => UserSchema.parse(response),
       providesTags: (result, error, id) => [{ type: "UserSelfDetails" as const, id }],
     }),
     [Endpoints.fetchUserList]: builder.query<UserList, void>({
       query: () => ({
-        url: EndpointUrls.user,
+        url: "/user/",
         method: "GET",
       }),
       transformResponse: (response: string) => ApiUserListResponseSchema.parse(response).results,
@@ -127,7 +127,7 @@ export const api = createApi({
       query: (body) => ({
         method: "PATCH",
         body,
-        url: EndpointUrls.userManage + body.id + "/",
+        url: `/user/manage/${body.id}/`,
       }),
       transformResponse: (response) => ManageUser.parse(response),
       invalidatesTags: ["UserList"],
@@ -136,7 +136,7 @@ export const api = createApi({
       query: (body) => ({
         method: "DELETE",
         body,
-        url: EndpointUrls.userDelete + body.id + "/",
+        url: `/user/delete/${body.id}/`,
       }),
       invalidatesTags: ["UserList"],
     }),
@@ -146,14 +146,14 @@ export const api = createApi({
     }),
     [Endpoints.uploadFinished]: builder.mutation<void, FormData>({
       query: (form_data) => ({
-        url: EndpointUrls.tasksUploadComplete,
+        url: "/upload/complete/",
         method: "POST",
         body: form_data,
       }),
     }),
     [Endpoints.upload]: builder.mutation<IUploadResponse, IUploadOptions>({
       query: (options) => ({
-        url: EndpointUrls.tasksUpload,
+        url: "/upload/",
         method: "POST",
         body: options.form_data,
         headers: {
@@ -164,42 +164,42 @@ export const api = createApi({
     }),
     [Endpoints.worker]: builder.query<IWorkerAvailabilityResponse, void>({
       query: () => ({
-        url: EndpointUrls.tasksQueueAvailability,
+        url: "/queue-availability/",
         method: "GET",
       }),
     }),
     [Endpoints.incompleteFaces]: builder.query<IIncompletePersonFaceListResponse, IIncompletePersonFaceListRequest>({
       query: ({ inferred = false }) => ({
-        url: `faces/incomplete/?inferred=${inferred}`,
+        url: `/faces/incomplete/?inferred=${inferred}`,
       }),
       providesTags: ["Faces"],
     }),
     [Endpoints.fetchFaces]: builder.query<IPersonFaceListResponse, IPersonFaceListRequest>({
       query: ({ person, page = 0, inferred = false, orderBy = "confidence" }) => ({
-        url: `faces/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
+        url: `/faces/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
       }),
       providesTags: ["Faces"],
     }),
     [Endpoints.clusterFaces]: builder.query<IClusterFacesResponse, void>({
       query: () => ({
-        url: EndpointUrls.tasksFacesCluster,
+        url: "/faces/cluster/",
       }),
     }),
     [Endpoints.rescanFaces]: builder.query<IScanFacesResponse, void>({
       query: () => ({
-        url: EndpointUrls.tasksFacesScan,
+        url: "/faces/scan/",
         method: "POST",
       }),
     }),
     [Endpoints.trainFaces]: builder.mutation<ITrainFacesResponse, void>({
       query: () => ({
-        url: EndpointUrls.tasksFacesTrain,
+        url: "/faces/train/",
         method: "POST",
       }),
     }),
     [Endpoints.deleteFaces]: builder.mutation<IDeleteFacesResponse, IDeleteFacesRequest>({
       query: ({ faceIds }) => ({
-        url: EndpointUrls.tasksFacesDelete,
+        url: "/faces/delete/",
         method: "POST",
         body: { face_ids: faceIds },
       }),
@@ -209,24 +209,24 @@ export const api = createApi({
       ISetFacesLabelRequest
     >({
       query: ({ faceIds, personName }) => ({
-        url: EndpointUrls.tasksFacesLabel,
+        url: "/faces/label/",
         method: "POST",
         body: { person_name: personName, face_ids: faceIds },
       }),
     }),
     [Endpoints.fetchServerStats]: builder.query<ServerStatsResponseType, void>({
       query: () => ({
-        url: EndpointUrls.statsServer,
+        url: "/stats/server/",
       }),
     }),
     [Endpoints.fetchStorageStats]: builder.query<StorageStatsResponseType, void>({
       query: () => ({
-        url: EndpointUrls.statsStorage,
+        url: "/stats/storage/",
       }),
     }),
     [Endpoints.fetchImageTag]: builder.query<ImageTagResponseType, void>({
       query: () => ({
-        url: EndpointUrls.visualImageTag,
+        url: "/image-tag/",
       }),
     }),
   }),
