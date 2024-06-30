@@ -42,6 +42,7 @@ export function FaceComponent({
   let offset: number = 0;
   let size: number = entrySquareSize - 10;
   let padding: number = 0;
+
   if (selectMode) {
     // display smaller faces to distinguish between normal and select mode
     offset = 10;
@@ -52,11 +53,15 @@ export function FaceComponent({
   if (isScrollingFast) {
     return <Avatar radius="xl" src="/thumbnail_placeholder.png" size={entrySquareSize - 10} />;
   }
+
   return (
     <Box
       className={
         isSelected ? "faceComponentBoxSelected" : "faceComponentBox"
       }
+      style={{
+        padding,
+      }}
     >
       <Center>
         <FaceTooltip tooltipOpened={tooltipOpened} cell={cell}>

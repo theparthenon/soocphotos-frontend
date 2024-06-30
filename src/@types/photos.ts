@@ -11,7 +11,6 @@ export type SimpleUser = z.infer<typeof SimpleUserSchema>;
 export enum MediaType {
   IMAGE = 'image',
   VIDEO = 'video',
-  MOTION_PHOTO = 'motion_photo',
 }
 
 export const PigPhotoSchema = z.object({

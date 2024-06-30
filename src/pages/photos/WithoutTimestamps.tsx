@@ -18,6 +18,7 @@ export default function WithoutTimestampPhotosView() {
     useEffect(() => {
         if (fetchedPhotosetType !== PhotosetType.NO_TIMESTAMP) {
             fetchPhotos(1);
+            console.log(fetchPhotos(1));
         }
     }, []);
 

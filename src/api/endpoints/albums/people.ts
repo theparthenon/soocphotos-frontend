@@ -9,7 +9,7 @@ export const peopleAlbumsApi = api
   .injectEndpoints({
     endpoints: (builder) => ({
       [Endpoints.fetchPeopleAlbums]: builder.query<People, void>({
-        query: () => EndpointUrls.people + '?page_size=1000',
+        query: () => "people/?page_size=1000",
         transformResponse: (response) => {
           const people = PeopleResponseSchema.parse(response).results.map((item) => ({
             key: item.id.toString(),
@@ -28,7 +28,7 @@ export const peopleAlbumsApi = api
         { id: string; personName: string; newPersonName: string }
       >({
         query: ({ id, newPersonName }) => ({
-          url: EndpointUrls.people + id + '/',
+          url: `people/${id}/`,
           method: 'PATCH',
           body: { newPersonName },
         }),
@@ -38,7 +38,7 @@ export const peopleAlbumsApi = api
       }),
       [Endpoints.deletePersonAlbum]: builder.mutation<void, string>({
         query: (id) => ({
-          url: EndpointUrls.people + id + '/',
+          url: `people/${id}/`,
           method: 'DELETE',
         }),
         transformResponse: () => {
@@ -47,7 +47,7 @@ export const peopleAlbumsApi = api
       }),
       [Endpoints.setPersonAlbumCover]: builder.mutation<void, { id: string; cover_photo: string }>({
         query: ({ id, cover_photo }) => ({
-          url: EndpointUrls.people + id + '/',
+          url: `people/${id}/`,
           method: 'PATCH',
           body: { cover_photo },
         }),

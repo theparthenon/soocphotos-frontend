@@ -20,9 +20,9 @@ export enum EndpointUrls {
   albumsThing = "/album/thing/",
   albumsThingList = "/album/thing/",
   // Albums - User
-  albumsUser = "/albums/",
-  albumsUserEdit = "/albums/edit/",
-  albumsUserList = "/albums/",
+  albumsUser = "/album/user/",
+  albumsUserEdit = "/album/user/edit/",
+  albumsUserList = "/album/user/list/",
   // Auth
   authObtain = "/auth/token/obtain/",
   authRefresh = "/auth/token/refresh/",

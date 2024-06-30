@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 import { Stack } from "@mantine/core";
 import { useElementSize } from "@mantine/hooks";
@@ -119,7 +120,8 @@ export default function FaceDashboard() {
     if (scrollTo !== null && scrollTop === scrollTo) {
       setScrollTo(null);
     }
-    if (tabs[activeTab].scrollPosition !== scrollTop) {
+
+    if (tabs[activeTab]?.scrollPosition !== scrollTop) {
       dispatch(
         faceActions.saveCurrentGridPosition({
           tab: activeTab,
@@ -372,7 +374,7 @@ export default function FaceDashboard() {
                 rowCount={
                   activeTab === FacesTab.enum.labeled ? labeledCellContents.length : inferredCellContents.length
                 }
-                scrollTop={tabs[activeTab].scrollPosition}
+                scrollTop={tabs[activeTab]?.scrollPosition}
                 onScroll={handleGridScroll}
               />
             </ScrollScrubber>
