@@ -1,4 +1,4 @@
-import { IconPlayerPlay as PlayerPlay, IconRun as Run } from "@tabler/icons-react";
+import { IconPlayerPlay as PlayerPlay } from "@tabler/icons-react";
 import { Duration } from "luxon";
 import React from "react";
 
@@ -17,13 +17,13 @@ export function VideoOverlay({ item }: Props) {
     return <span className="videoDuration">{Duration.fromObject({ seconds: video_length }).toFormat("mm:ss")}</span>;
   }
 
-  if (![MediaType.VIDEO, MediaType.MOTION_PHOTO].includes(item.type)) {
+  if (![MediaType.VIDEO].includes(item.type)) {
     return <div />;
   }
 
   return (
     <div className="videoContainer">
-      {item.type === MediaType.MOTION_PHOTO ? <Run /> : <PlayerPlay />}
+      <PlayerPlay />
       {item.video_length && item.video_length !== "None" && getDuration(item)}
     </div>
   );

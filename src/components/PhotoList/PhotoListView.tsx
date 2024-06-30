@@ -8,16 +8,16 @@ import { useSetPersonAlbumCoverMutation } from "@/api/endpoints/albums/people";
 import { useSetUserAlbumCoverMutation } from "@/api/endpoints/albums/user";
 import { serverAddress } from "@/api/apiClient";
 import { photoDetailsApi } from "@/api/endpoints/photos/photoDetail";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import { TOP_MENU_HEIGHT } from "@/constants/ui.constant";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { formatDateForPhotoGroups } from "@/utils/utils";
 import { ModalAlbumEdit } from "@/components/Modals/ModalAlbumEdit";
 import { LightBox } from "@/components/Lightbox/Lightbox";
 import Pig from "@/components/ReactPig";
-import { ScrollScrubber } from "@/components/ScrollScrubber";
+import { ScrollScrubber } from "@/components/scrollscrubber/ScrollScrubber";
+import { ScrollerType } from "@/components/scrollscrubber/ScrollScrubberTypes.zod";
+import type { IScrollerData } from "@/components/scrollscrubber/ScrollScrubberTypes.zod";
 import { useScrollLock } from "@/components/UseScrollLock/UseScrollLock";
-import { ScrollerType } from "@/@types/scrollScrubber";
-import type { IScrollerData } from "@/@types/scrollScrubber";
 import { DefaultHeader } from "./DefaultHeader";
 import { FavoritedOverlay } from "./FavoritedOverlay";
 import { SelectionActions } from "./SelectionActions";
@@ -48,22 +48,21 @@ type SelectionState = {
   selectMode: boolean;
 };
 
-function PhotoListViewComponent(
-  {
-    title = "",
-    loading = false,
-    icon = "",
-    photoset = [],
-    idx2hash = [],
-    selectable = false,
-    numberOfItems = 0,
-    updateGroups = "",
-    updateItems = "",
-    date = "",
-    dayHeaderPrefix = "",
-    header = "",
-    additionalSubHeader = ""
-  }: Props) {
+function PhotoListViewComponent({
+  title,
+  loading,
+  icon,
+  photoset,
+  idx2hash,
+  selectable,
+  numberOfItems = 0,
+  updateGroups = null,
+  updateItems = null,
+  date = null,
+  dayHeaderPrefix = null,
+  header = null,
+  additionalSubHeader = null,
+}: Props) {
   const { height } = useViewportSize();
   const pigRef = useRef<Pig>(null);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(1);
@@ -106,7 +105,7 @@ function PhotoListViewComponent(
     if (pxHeight < 250) {
       return `${serverAddress}/media/thumbnails/${url.split(";")[0]}`;
     }
-    return `${serverAddress}/media/thumbnails/${url.split(";")[0]}`;
+    return `${serverAddress}/media/optimized/${url.split(";")[0]}`;
   }, []);
 
   const updateSelectionState = (newState: { selectedItems: any[]; selectMode: boolean }) => {
@@ -225,7 +224,7 @@ function PhotoListViewComponent(
 
   return (
     <div>
-      <Box className="photoListBox">
+      <Box className="photoListBox" >
         {header || (
           <DefaultHeader
             // @ts-ignore
@@ -243,9 +242,7 @@ function PhotoListViewComponent(
           />
         )}
         {!loading && getNumPhotos() > 0 && (
-          <Box
-            className="photoListBoxInner"
-          >
+          <Box className="photoListBoxInner">
             <Group
               style={{
                 paddingLeft: 10,
@@ -259,8 +256,7 @@ function PhotoListViewComponent(
                 updateSelectionState={updateSelectionState}
               />
               <Group justify="right">
-                {/* @ts-ignore */ }
-                {!route.location.pathname.startsWith("/deleted") && (
+                {!route.location?.pathname.startsWith("/deleted") && (
                   <SelectionActions
                     selectedItems={selectionState.selectedItems}
                     // @ts-ignore
@@ -300,11 +296,7 @@ function PhotoListViewComponent(
           targetHeight={gridHeight.current}
           type={ScrollerType.enum.date}
         >
-          <div
-            style={{
-              padding: 10,
-            }}
-          >
+          <div style={{ padding: 10 }}>
             <Pig
               ref={pigRef}
               className="scrollscrubbertarget"
@@ -366,14 +358,14 @@ function PhotoListViewComponent(
         />
       )}
 
-        <ModalAlbumEdit
-          isOpen={modalAddToAlbumOpen}
-          onRequestClose={() => {
-            setModalAddToAlbumOpen(false);
-            updateSelectionState({ selectedItems: [], selectMode: false });
-          }}
-          selectedImages={selectionState.selectedItems}
-        />
+      <ModalAlbumEdit
+        isOpen={modalAddToAlbumOpen}
+        onRequestClose={() => {
+          setModalAddToAlbumOpen(false);
+          updateSelectionState({ selectedItems: [], selectMode: false });
+        }}
+        selectedImages={selectionState.selectedItems}
+      />
     </div>
   );
 }

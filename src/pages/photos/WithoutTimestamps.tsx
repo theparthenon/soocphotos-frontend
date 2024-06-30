@@ -8,30 +8,24 @@ import { PhotosetType } from "@/reducers/photosReducer";
 import { useAppSelector } from "@/store/store";
 
 export default function WithoutTimestampPhotosView() {
-    const {
-        fetchedPhotosetType,
-        numberOfPhotos,
-        photosFlat
-    } = useAppSelector(state => state.photos as PhotosState);
+    const { fetchedPhotosetType, numberOfPhotos, photosFlat } = useAppSelector(state => state.photos as PhotosState);
     const [fetchPhotos] = useLazyFetchPhotosWithoutTimestampQuery();
 
     useEffect(() => {
         if (fetchedPhotosetType !== PhotosetType.NO_TIMESTAMP) {
-            fetchPhotos(1);
-            console.log(fetchPhotos(1));
+          fetchPhotos(1);
         }
-    }, []);
+      }, []);
 
     const getImages = (visibleItems: any) => {
         if (visibleItems.filter((i: any) => i.isTemp).length > 0) {
-            const firstTempObject = visibleItems.filter((i: any) => i.isTemp)[0];
-            const page = Math.ceil((parseInt(firstTempObject.id, 10) + 1) / 100);
-
-            if (page > 1) {
-                fetchPhotos(page);
-            }
+          const firstTempObject = visibleItems.filter((i: any) => i.isTemp)[0];
+          const page = Math.ceil((parseInt(firstTempObject.id, 10) + 1) / 100);
+          if (page > 1) {
+            fetchPhotos(page);
+          }
         }
-    };
+      };
 
     return (
         <PhotoListView
@@ -40,6 +34,7 @@ export default function WithoutTimestampPhotosView() {
             icon={<Photo size={50} />}
             photoset={photosFlat}
             idx2hash={photosFlat}
+            numberOfItems={numberOfPhotos}
             updateItems={getImages}
             selectable
         />

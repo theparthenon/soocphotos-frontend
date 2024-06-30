@@ -19,7 +19,13 @@ type Props = Readonly<{
   children: ReactNode | null; // Target element must be one of the children nodes
 }>;
 
-export function ScrollScrubber({ type, scrollPositions, targetHeight, scrollToY, children }: Props) {
+export function ScrollScrubber({
+  type,
+  scrollPositions,
+  targetHeight,
+  scrollToY,
+  children
+}: Props) {
   // ref and size of scrollscrubber
   const { ref, width, height } = useElementSize();
   const scrollerVisibilityTimerRef: { current: NodeJS.Timeout | null } = useRef(null);
