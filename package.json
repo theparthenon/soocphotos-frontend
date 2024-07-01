@@ -56,7 +56,7 @@
     "react-dropzone": "^14.2.3",
     "react-gallery-grid": "^0.1.10",
     "react-leaflet": "1.9.1",
-    "react-leaflet-markercluster": "1.1.8",
+    "react-leaflet-markercluster": "2.0.0",
     "react-lottie": "^1.2.4",
     "react-pig": "^1.2.0",
     "react-player": "^2.16.0",
