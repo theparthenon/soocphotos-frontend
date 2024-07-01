@@ -42,56 +42,11 @@ const initialState = {
   fetchingAlbumsThing: false,
   fetchedAlbumsThing: false,
 
-  albumsSharedToMe: [],
-  fetchingAlbumsSharedToMe: false,
-  fetchedAlbumsSharedToMe: false,
-
-  albumsSharedFromMe: [],
-  fetchingAlbumsSharedFromMe: false,
-  fetchedAlbumsSharedFromMe: false,
-
   error: null,
 };
 export default function reducer(state = initialState, action = DEFAULT_ACTION) {
   let newAlbum;
   switch (action.type) {
-    case "FETCH_ALBUMS_SHARED_TO_ME": {
-      return { ...state, fetchingAlbumsSharedToMe: true };
-    }
-    case "FETCH_ALBUMS_SHARED_TO_ME_FULFILLED": {
-      return {
-        ...state,
-        fetchingAlbumsSharedToMe: false,
-        fetchedAlbumsSharedToMe: true,
-        albumsSharedToMe: action.payload,
-      };
-    }
-    case "FETCH_ALBUMS_SHARED_TO_ME_REJECTED": {
-      return {
-        ...state,
-        fetchingAlbumsSharedToMe: false,
-        fetchedAlbumsSharedToMe: false,
-      };
-    }
-
-    case "FETCH_ALBUMS_SHARED_FROM_ME": {
-      return { ...state, fetchingAlbumsSharedFromMe: true };
-    }
-    case "FETCH_ALBUMS_SHARED_FROM_ME_FULFILLED": {
-      return {
-        ...state,
-        fetchingAlbumsSharedFromMe: false,
-        fetchedAlbumsSharedFromMe: true,
-        albumsSharedFromMe: action.payload,
-      };
-    }
-    case "FETCH_ALBUMS_SHARED_FROM_ME_REJECTED": {
-      return {
-        ...state,
-        fetchingAlbumsSharedFromMe: false,
-        fetchedAlbumsSharedFromMe: false,
-      };
-    }
     case "FETCH_AUTO_ALBUMS": {
       return { ...state, fetchingAlbumsAuto: true };
     }

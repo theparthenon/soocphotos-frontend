@@ -9,9 +9,12 @@ import { useEditor } from "@tiptap/react";
 import React, { useEffect, useState } from "react";
 import { push } from "redux-first-history";
 
-import { generatePhotoIm2txtCaption, savePhotoCaption } from "@/actions/photosActions";
 import type { Photo as PhotoType } from "@/@types/photos";
 import { useFetchThingsAlbumsQuery } from "@/api/endpoints/albums/things";
+import {
+  useGenerateImageToTextCaptionMutation,
+  useSavePhotoCaptionMutation,
+} from "@/api/endpoints/photos/photoDetail";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { fuzzyMatch } from "@/utils/utils";
 import suggestion from "./Suggestion";
@@ -30,6 +33,8 @@ export function Description(props: Props) {
 
   const [editMode, setEditMode] = useState(false);
   const [imageCaption, setImageCaption] = useState("");
+  const [updateCaption] = useSavePhotoCaptionMutation();
+  const [generateImageToTextCaptions] = useGenerateImageToTextCaptionMutation();
   const editor = useEditor({
     editable: editMode,
     extensions: [
@@ -118,7 +123,7 @@ export function Description(props: Props) {
                 loading={generatingCaptionIm2txt}
                 variant="subtle"
                 onClick={() => {
-                  dispatch(generatePhotoIm2txtCaption(photoDetail.image_hash));
+                  generateImageToTextCaptions({ id: photoDetail.image_hash });
                 }}
                 disabled={(generatingCaptionIm2txt != null && generatingCaptionIm2txt)}
               >
@@ -159,7 +164,7 @@ export function Description(props: Props) {
                 variant="light"
                 color="green"
                 onClick={() => {
-                  dispatch(savePhotoCaption(photoDetail.image_hash, imageCaption));
+                  updateCaption({ id: photoDetail.image_hash, caption: imageCaption });
                   setEditMode(false);
                 }}
               >

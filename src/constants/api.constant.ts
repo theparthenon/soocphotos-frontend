@@ -72,8 +72,8 @@ export enum EndpointUrls {
   statsStorage = "/stats/storage/",
   // Tasks
   tasksAutoAlbumDeleteAll = "/tasks/auto-album/delete-all/",
-  tasksAutoAlbumGenerate = "/tasks/auto-album/generate/",
-  tasksAutoAlbumGenerateTitle = "/tasks/auto-album/generate/title/",
+  tasksAutoAlbumGenerate = "/generate/auto-album/",
+  tasksAutoAlbumGenerateTitle = "/generate/auto-album-title/",
   tasksQueueAvailability = "/queue-availability/",
   tasksRulesDefault = "/rules/default/",
   tasksRulesPredefined = "/rules/predefined/",

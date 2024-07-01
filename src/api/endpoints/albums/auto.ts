@@ -1,24 +1,24 @@
-import { AutoAlbum, AutoAlbumSchema } from '@/@types/albums';
-import { AutoAlbumList, AutoAlbumListResponseSchema } from '@/@types/albums/auto';
-import { api } from '@/api/api';
-import { EndpointUrls, Endpoints } from '@/constants/api.constant';
-import { notification } from '@/services/notifications';
+import { AutoAlbum, AutoAlbumSchema } from "@/@types/albums";
+import { AutoAlbumList, AutoAlbumListResponseSchema } from "@/@types/albums/auto";
+import { api } from "@/api/api";
+import { Endpoints } from "@/constants/api.constant";
+import { notification } from "@/services/notifications";
 
 export const autoAlbumsApi = api
   .injectEndpoints({
     endpoints: (builder) => ({
       [Endpoints.fetchAutoAlbums]: builder.query<AutoAlbumList, void>({
-        query: () => EndpointUrls.albumsAutoList,
+        query: () => "/album/auto/list/",
         transformResponse: (response) => AutoAlbumListResponseSchema.parse(response).results,
       }),
       [Endpoints.fetchAutoAlbum]: builder.query<AutoAlbum, string>({
-        query: (id) => EndpointUrls.albumsAuto + id + '/',
+        query: (id) => `album/auto/${id}/`,
         transformResponse: (response) => AutoAlbumSchema.parse(response),
       }),
       [Endpoints.deleteAutoAlbum]: builder.mutation<void, { id: string; albumTitle: string }>({
         query: ({ id }) => ({
-          url: EndpointUrls.albumsAuto + id + '/',
-          method: 'DELETE',
+          url: `album/auto/${id}/`,
+          method: "DELETE",
           body: {},
         }),
         transformResponse: (response, meta, query) => {
@@ -27,8 +27,8 @@ export const autoAlbumsApi = api
       }),
       [Endpoints.deleteAllAutoAlbums]: builder.mutation<void, void>({
         query: () => ({
-          url: EndpointUrls.tasksAutoAlbumDeleteAll,
-          method: 'POST',
+          url: `album/auto/delete-all/`,
+          method: "POST",
           body: {},
         }),
         transformResponse: () => {
@@ -37,8 +37,8 @@ export const autoAlbumsApi = api
       }),
       [Endpoints.generateAutoAlbums]: builder.mutation<void, void>({
         query: () => ({
-          url: EndpointUrls.tasksAutoAlbumGenerate,
-          method: 'POST',
+          url: "/generate/auto-album/",
+          method: "POST",
           body: {},
         }),
         transformResponse: () => {
@@ -47,23 +47,23 @@ export const autoAlbumsApi = api
       }),
     }),
   })
-  .enhanceEndpoints<'AutoAlbums' | 'AutoAlbum'>({
-    addTagTypes: ['AutoAlbums', 'AutoAlbum'],
+  .enhanceEndpoints<"AutoAlbums" | "AutoAlbum">({
+    addTagTypes: ["AutoAlbums", "AutoAlbum"],
     endpoints: {
       [Endpoints.fetchAutoAlbums]: {
-        providesTags: ['AutoAlbums'],
+        providesTags: ["AutoAlbums"],
       },
       [Endpoints.fetchAutoAlbum]: {
-        providesTags: ['AutoAlbum'],
+        providesTags: ["AutoAlbum"],
       },
       [Endpoints.deleteAutoAlbum]: {
-        invalidatesTags: ['AutoAlbums', 'AutoAlbum'],
+        invalidatesTags: ["AutoAlbums", "AutoAlbum"],
       },
       [Endpoints.deleteAllAutoAlbums]: {
-        invalidatesTags: ['AutoAlbums', 'AutoAlbum'],
+        invalidatesTags: ["AutoAlbums", "AutoAlbum"],
       },
       [Endpoints.generateAutoAlbums]: {
-        invalidatesTags: ['AutoAlbums', 'AutoAlbum'],
+        invalidatesTags: ["AutoAlbums", "AutoAlbum"],
       },
     },
   });

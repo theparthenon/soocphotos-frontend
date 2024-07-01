@@ -1,13 +1,15 @@
-@import url('@mantine/core/styles.css');
-@import url('@mantine/notifications/styles.css');
-@import url('react-vis/dist/style.css');
+@import url("@mantine/core/styles.css");
+@import url("@mantine/notifications/styles.css");
+@import url("leaflet/dist/leaflet.css");
+@import url("react-leaflet-markercluster/dist/styles.min.css");
+@import url("react-vis/dist/style.css");
 
-@import url('./dateTime.scss');
-@import url('./lightbox.scss');
-@import url('./photos.scss');
-@import url('./reactLeaflet.scss');
-@import url('./scrollScrubber.scss');
-@import url('./sidebar.scss');
+@import url("./dateTime.scss");
+@import url("./lightbox.scss");
+@import url("./photos.scss");
+@import url("./reactLeaflet.scss");
+@import url("./scrollScrubber.scss");
+@import url("./sidebar.scss");
 
 .colorSchemeToggle {
     z-index: 1000000;

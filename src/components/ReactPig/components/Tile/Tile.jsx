@@ -1,6 +1,7 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useSpring, animated } from "react-spring";
+import React, { useState } from "react";
+import { animated, useSpring } from "react-spring";
+
 import getImageHeight from "../../utils/getImageHeight";
 import getTileMeasurements from "../../utils/getTileMeasurements";
 import styles from "./styles.module.css";
@@ -27,11 +28,11 @@ const Tile = React.memo(
   const isSelectable = selectable;
   const isSelected = selected;
   const isExpanded = activeTileUrl === item.url;
-  const isVideo = !isTemp &&
+  const isVideo =
+    !isTemp &&
     (item.url.includes(".mp4") ||
     item.url.includes(".mov") ||
-    (item.type !== undefined &&
-      item.type.includes("video")));
+    (item.type !== undefined && item.type.includes("video")));
 
   const [isFullSizeLoaded, setFullSizeLoaded] = useState(!!isVideo);
   const TopRightOverlay = topRightOverlay;
@@ -44,7 +45,7 @@ const Tile = React.memo(
     windowHeight,
     settings,
     containerWidth,
-    containerOffsetTop
+    containerOffsetTop,
   });
 
   // gridPosition is what has been set by the grid layout logic (in the parent component)
@@ -85,7 +86,7 @@ const Tile = React.memo(
     marginRight: isSelected && !isExpanded ? item.style.width * 0.05 : 0,
     marginTop: isSelected && !isExpanded ? item.style.height * 0.05 : 0,
     marginBottom: isSelected && !isExpanded ? item.style.height * 0.05 : 0,
-    config: { mass: 1.5, tension: 400, friction: 40 }
+    config: { mass: 1.5, tension: 400, friction: 40 },
   });
 
   return (
@@ -102,14 +103,16 @@ const Tile = React.memo(
         marginRight: marginRight.to(t => t),
         marginTop: marginTop.to(t => t),
         marginBottom: marginBottom.to(t => t),
-        transform: transform.to(t => t)
+        transform: transform.to(t => t),
       }}
     >
 
       {useLqip && !isTemp && (
         // LQIP
         <img
-          className={`${styles.pigImg} ${styles.pigThumbnail}${isFullSizeLoaded ? ` ${styles.pigThumbnailLoaded}` : ""}`}
+          className={`${styles.pigImg} ${styles.pigThumbnail}${
+            isFullSizeLoaded ? ` ${styles.pigThumbnailLoaded}` : ""
+          }`}
           src={getUrl(item.url, settings.thumbnailSize)}
           loading="lazy"
           width={item.style.width}
@@ -118,8 +121,7 @@ const Tile = React.memo(
         />
     )}
 
-      {(scrollSpeed === "slow" ) && !isVideo &&
-      !isTemp && (
+      {scrollSpeed === "slow" && !isVideo && !isTemp && (
         // grid image
         <img
           className={`${styles.pigImg} ${styles.pigFull}${isFullSizeLoaded ? ` ${styles.pigFullLoaded}` : ""}`}
@@ -129,10 +131,11 @@ const Tile = React.memo(
         />
     )}
 
-      {(scrollSpeed === "slow" ) && isVideo &&
-      !isTemp && (
+      {scrollSpeed === "slow" && isVideo && !isTemp && (
         <video
-          className={`${styles.pigImg} ${styles.pigThumbnail}${isFullSizeLoaded ? ` ${styles.pigThumbnailLoaded}` : ""}`}
+          className={`${styles.pigImg} ${styles.pigThumbnail}${
+            isFullSizeLoaded ? ` ${styles.pigThumbnailLoaded}` : ""
+          }`}
           src={getUrl(item.url, getImageHeight(containerWidth))}
           onCanPlay={() => setFullSizeLoaded(true)}
           onMouseOver={event => event.target.play()}
@@ -147,11 +150,7 @@ const Tile = React.memo(
 
       {isExpanded && !isVideo && !isTemp && (
         // full size expanded image
-        <img
-          className={styles.pigImg}
-          src={getUrl(item.url, settings.expandedSize)}
-          alt=""
-        />
+        <img className={styles.pigImg} src={getUrl(item.url, settings.expandedSize)} alt="" />
       )}
 
       {isExpanded && isVideo && !isTemp && (
@@ -188,7 +187,8 @@ const Tile = React.memo(
       </div>
     </animated.button>
   );
-});
+}
+);
 
 const ItemType = PropTypes.shape({
   id: PropTypes.string,

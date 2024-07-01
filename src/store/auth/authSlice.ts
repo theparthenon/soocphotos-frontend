@@ -30,11 +30,12 @@ const authSlice = createSlice({
     logout: () => {
       const cookies = new Cookies();
       cookies.remove("jwt");
+      sessionStorage.clear();
       return initialState;
     },
-    clearError: (state) => ({ ...state, error: null }),
+    clearError: state => ({ ...state, error: null }),
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addMatcher(api.endpoints.login.matchFulfilled, (state, { payload }) => ({
         ...state,

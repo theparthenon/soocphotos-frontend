@@ -11,7 +11,7 @@ type Props = Readonly<{
 }>;
 
 export function FacesCountersHoverCard({ tab, children }: Props) {
-  const { inferredFacesList, labeledFacesList } = useAppSelector(store => store.faces);
+  const { inferredFacesList, labeledFacesList } = useAppSelector(store => store.face);
 
   const [labeledPersonsCount, setLabeledPersonsCount] = useState(0);
   const [labeledFacesCount, setLabeledFacesCount] = useState(0);

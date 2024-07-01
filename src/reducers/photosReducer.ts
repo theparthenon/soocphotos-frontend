@@ -1,21 +1,21 @@
-import type { AnyAction } from '@/@types/action';
-import type { IncompleteDatePhotosGroup, Photo, PigPhoto, UserPhotosGroup } from '@/@types/photos';
-import { DEFAULT_ACTION } from '@/constants/api.constant';
-import { addTempElementsToFlatList, getPhotosFlatFromGroupedByDate } from '@/utils/utils';
+import type { AnyAction } from "@/@types/action";
+import type { IncompleteDatePhotosGroup, Photo, PigPhoto, UserPhotosGroup } from "@/@types/photos";
+import { DEFAULT_ACTION } from "@/constants/api.constant";
+import { addTempElementsToFlatList, getPhotosFlatFromGroupedByDate } from "@/utils/utils";
 
 export enum PhotosetType {
-  NONE = 'none',
-  TIMESTAMP = 'timestamp',
-  NO_TIMESTAMP = 'noTimestamp',
-  FAVORITES = 'favorites',
-  PHOTOS = 'photos',
-  HIDDEN = 'hidden',
-  RECENTLY_ADDED = 'recentlyAdded',
-  DELETED = 'deleted',
-  SEARCH = 'search',
-  USER_ALBUM = 'userAlbum',
-  PERSON = 'person',
-  VIDEOS = 'videos',
+  NONE = "none",
+  TIMESTAMP = "timestamp",
+  NO_TIMESTAMP = "noTimestamp",
+  FAVORITES = "favorites",
+  PHOTOS = "photos",
+  HIDDEN = "hidden",
+  RECENTLY_ADDED = "recentlyAdded",
+  DELETED = "deleted",
+  SEARCH = "search",
+  USER_ALBUM = "userAlbum",
+  PERSON = "person",
+  VIDEOS = "videos",
 }
 
 export interface PhotosState {
@@ -74,11 +74,11 @@ export function photos(
   let indexToReplace: number;
 
   switch (action.type) {
-    case 'GENERATE_PHOTO_CAPTION': {
+    case "GENERATE_PHOTO_CAPTION": {
       return { ...state, generatingCaptionIm2txt: true };
     }
 
-    case 'GENERATE_PHOTO_CAPTION_FULFILLED': {
+    case "GENERATE_PHOTO_CAPTION_FULFILLED": {
       return {
         ...state,
         generatingCaptionIm2txt: false,
@@ -86,7 +86,7 @@ export function photos(
       };
     }
 
-    case 'GENERATE_PHOTO_CAPTION_REJECTED': {
+    case "GENERATE_PHOTO_CAPTION_REJECTED": {
       return {
         ...state,
         generatingCaptionIm2txt: false,
@@ -94,10 +94,10 @@ export function photos(
       };
     }
 
-    case 'FETCH_RECENTLY_ADDED_PHOTOS': {
+    case "FETCH_RECENTLY_ADDED_PHOTOS": {
       return { ...state, fetchedPhotosetType: PhotosetType.NONE };
     }
-    case 'FETCH_RECENTLY_ADDED_PHOTOS_FULFILLED': {
+    case "FETCH_RECENTLY_ADDED_PHOTOS_FULFILLED": {
       return {
         ...state,
         photosFlat: action.payload.photosFlat,
@@ -105,17 +105,17 @@ export function photos(
         recentlyAddedPhotosDate: action.payload.date,
       };
     }
-    case 'FETCH_RECENTLY_ADDED_PHOTOS_REJECTED': {
+    case "FETCH_RECENTLY_ADDED_PHOTOS_REJECTED": {
       return resetPhotos(state, action.payload);
     }
 
-    case 'SCAN_PHOTOS': {
+    case "SCAN_PHOTOS": {
       return { ...state, scanningPhotos: true };
     }
-    case 'SCAN_PHOTOS_REJECTED': {
+    case "SCAN_PHOTOS_REJECTED": {
       return { ...state, scanningPhotos: false, error: action.payload };
     }
-    case 'SCAN_PHOTOS_FULFILLED': {
+    case "SCAN_PHOTOS_FULFILLED": {
       return {
         ...state,
         scanningPhotos: false,
@@ -123,13 +123,13 @@ export function photos(
       };
     }
 
-    case 'FETCH_DATE_ALBUMS_RETRIEVE': {
+    case "FETCH_DATE_ALBUMS_RETRIEVE": {
       return { ...state };
     }
-    case 'FETCH_DATE_ALBUMS_RETRIEVE_REJECTED': {
+    case "FETCH_DATE_ALBUMS_RETRIEVE_REJECTED": {
       return resetPhotos(state, action.payload);
     }
-    case 'FETCH_DATE_ALBUMS_RETRIEVE_FULFILLED': {
+    case "FETCH_DATE_ALBUMS_RETRIEVE_FULFILLED": {
       const { page } = action.payload;
       newPhotosGroupedByDate = [...state.photosGroupedByDate];
       indexToReplace = newPhotosGroupedByDate.findIndex(
@@ -154,13 +154,13 @@ export function photos(
         photosGroupedByDate: newPhotosGroupedByDate,
       };
     }
-    case 'FETCH_DATE_ALBUMS_LIST': {
+    case "FETCH_DATE_ALBUMS_LIST": {
       return { ...state, fetchedPhotosetType: PhotosetType.NONE };
     }
-    case 'FETCH_DATE_ALBUMS_LIST_REJECTED': {
+    case "FETCH_DATE_ALBUMS_LIST_REJECTED": {
       return resetPhotos(state, action.payload);
     }
-    case 'FETCH_DATE_ALBUMS_LIST_FULFILLED': {
+    case "FETCH_DATE_ALBUMS_LIST_FULFILLED": {
       return {
         ...state,
         photosFlat: action.payload.photosFlat,
@@ -168,10 +168,10 @@ export function photos(
         photosGroupedByDate: action.payload.photosGroupedByDate,
       };
     }
-    case 'FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED': {
+    case "FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED": {
       return { ...state };
     }
-    case 'FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED_FULFILLED': {
+    case "FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED_FULFILLED": {
       const { fetchedPage, photosCount } = action.payload;
       let currentPhotos = [...state.photosFlat];
       if (fetchedPage === 1) {
@@ -188,13 +188,13 @@ export function photos(
         numberOfPhotos: photosCount,
       };
     }
-    case 'FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED_REJECTED': {
+    case "FETCH_NO_TIMESTAMP_PHOTOS_PAGINATED_REJECTED": {
       return resetPhotos(state, action.payload);
     }
-    case 'FETCH_PHOTOSET': {
+    case "FETCH_PHOTOSET": {
       return { ...state, fetchedPhotosetType: PhotosetType.NONE };
     }
-    case 'FETCH_PHOTOSET_FULFILLED': {
+    case "FETCH_PHOTOSET_FULFILLED": {
       return {
         ...state,
         photosFlat: action.payload.photosFlat,
@@ -203,10 +203,10 @@ export function photos(
         photosGroupedByUser: action.payload.photosGroupedByUser ?? [],
       };
     }
-    case 'FETCH_PHOTOSET_REJECTED': {
+    case "FETCH_PHOTOSET_REJECTED": {
       return resetPhotos(state, action.payload);
     }
-    case 'SET_PHOTOS_FAVORITE_FULFILLED': {
+    case "SET_PHOTOS_FAVORITE_FULFILLED": {
       updatedPhotoDetails = action.payload.updatedPhotos as Photo[];
       newPhotosGroupedByDate = [...state.photosGroupedByDate];
       newPhotosFlat = [...state.photosFlat];
@@ -216,7 +216,7 @@ export function photos(
           photo.id === photoDetails.image_hash ? { ...photo, rating: photoDetails.rating } : photo
         );
         newPhotosGroupedByDate = newPhotosGroupedByDate.map((group) =>
-          // Create a new group object if the photo exists in its items (don't mutate).
+          // Create a new group object if the photo exists in its items (don"t mutate).
           group.items.findIndex((photo) => photo.id === photoDetails.image_hash) === -1
             ? group
             : {
@@ -233,7 +233,7 @@ export function photos(
         );
 
         if (state.fetchedPhotosetType === PhotosetType.FAVORITES && !action.payload.favorite) {
-          // Remove the photo from the photo set. (Ok to mutate, since we've already created a new group.)
+          // Remove the photo from the photo set. (Ok to mutate, since we"ve already created a new group.)
           newPhotosGroupedByDate = newPhotosGroupedByDate.map((group) => ({
             ...group,
             items: group.items.filter((item) => item.id !== photoDetails.image_hash),
@@ -252,7 +252,7 @@ export function photos(
       };
     }
 
-    case 'FETCH_USER_ALBUM_FULFILLED': {
+    case "FETCH_USER_ALBUM_FULFILLED": {
       return {
         ...state,
         photosFlat: action.payload.photosFlat,
@@ -260,11 +260,11 @@ export function photos(
         photosGroupedByDate: action.payload.photosGroupedByDate,
       };
     }
-    case 'FETCH_USER_ALBUM_REJECTED': {
+    case "FETCH_USER_ALBUM_REJECTED": {
       return resetPhotos(state, action.payload);
     }
 
-    case 'auth/logout':
+    case "auth/logout":
       return { ...initialPhotosState };
 
     default: {

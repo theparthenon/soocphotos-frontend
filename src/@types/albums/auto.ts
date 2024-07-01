@@ -14,7 +14,12 @@ export const AutoAlbumListSchema = z
   })
   .array();
 
+export type AutoAlbumList = z.infer<typeof AutoAlbumListSchema>;
+
 export const AutoAlbumListResponseSchema = z.object({
+  count: z.number(),
+  next: z.string().nullable(),
+  previous: z.string().nullable(),
   results: AutoAlbumListSchema,
 });
 
@@ -29,6 +34,7 @@ export const AutoAlbumSchema = z.object({
   gps_lon: z.number().nullable(),
   photos: PhotoSimpleSchema.array(),
 });
+
 export type AutoAlbum = z.infer<typeof AutoAlbumSchema>;
 
 export const AutoAlbumInfoSchema = z.object({
@@ -39,12 +45,14 @@ export const AutoAlbumInfoSchema = z.object({
   photo_count: z.number(),
   favorited: z.boolean(),
 });
+
 export type AutoAlbumInfo = z.infer<typeof AutoAlbumInfoSchema>;
 
 // actions using new list view in backend
 
 export const FetchAutoAlbumsListResponseSchema = z.object({
+  count: z.number(),
+  next: z.string().nullable(),
+  previous: z.string().nullable(),
   results: AutoAlbumInfoSchema.array(),
 });
-
-export type AutoAlbumList = z.infer<typeof AutoAlbumListSchema>;

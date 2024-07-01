@@ -13,7 +13,7 @@ function WorkerRunningJob({ workerRunningJob }: IWorkerIndicator) {
     if (!workerRunningJob ||
         !workerRunningJob.result ||
         !workerRunningJob.result.progress) {
-        return <>Busy</>;
+        return <span>Busy</span>;
     }
 
     const progress = workerRunningJob.result.progress;
@@ -22,10 +22,10 @@ function WorkerRunningJob({ workerRunningJob }: IWorkerIndicator) {
     return (
         <Stack>
             <Progress value={value} />
-            <Text size="sm" style={{ textAlign: "center" }}>
+            <Text size="sm" style={{ textAlign: "center" }} component="div">
                 {progress.current} / {progress.target}
             </Text>
-            <Text size="sm" style={{ textAlign: "center" }}>
+            <Text size="sm" style={{ textAlign: "center" }} component="div">
                 Running {workerRunningJob.job_type_str} ...
             </Text>
         </Stack>

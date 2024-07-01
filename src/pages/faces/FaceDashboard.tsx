@@ -28,7 +28,7 @@ export default function FaceDashboard() {
   const { ref, width } = useElementSize();
   const gridRef = useRef<any>();
 
-  const { activeTab, tabs } = useAppSelector(store => store.faces);
+  const { activeTab, tabs } = useAppSelector(store => store.face);
 
   const [lastChecked, setLastChecked] = useState(null);
   const [selectedFaces, setSelectedFaces] = useState<any[]>([]);
@@ -53,7 +53,7 @@ export default function FaceDashboard() {
   >([]);
 
   const { inferredFacesList, labeledFacesList } = useAppSelector(
-    store => store.faces,
+    store => store.face,
     (prev, next) => prev.inferredFacesList === next.inferredFacesList && prev.labeledFacesList === next.labeledFacesList
   );
 
@@ -89,7 +89,7 @@ export default function FaceDashboard() {
     setScrollLocked(true);
   };
 
-  const { orderBy } = useAppSelector(store => store.faces);
+  const { orderBy } = useAppSelector(store => store.face);
 
   useEffect(() => {
     if (groups) {
@@ -121,7 +121,7 @@ export default function FaceDashboard() {
       setScrollTo(null);
     }
 
-    if (tabs[activeTab]?.scrollPosition !== scrollTop) {
+    if (tabs[activeTab].scrollPosition !== scrollTop) {
       dispatch(
         faceActions.saveCurrentGridPosition({
           tab: activeTab,
@@ -374,7 +374,7 @@ export default function FaceDashboard() {
                 rowCount={
                   activeTab === FacesTab.enum.labeled ? labeledCellContents.length : inferredCellContents.length
                 }
-                scrollTop={tabs[activeTab]?.scrollPosition}
+                scrollTop={tabs[activeTab].scrollPosition}
                 onScroll={handleGridScroll}
               />
             </ScrollScrubber>

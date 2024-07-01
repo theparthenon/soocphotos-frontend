@@ -15,7 +15,7 @@ type Props = Readonly<{
 
 export function TabComponent({ width, fetchingLabeledFacesList, fetchingInferredFacesList }: Props) {
   const dispatch = useAppDispatch();
-  const { activeTab } = useAppSelector(store => store.faces);
+  const { activeTab } = useAppSelector(store => store.face);
   const changeTab = (tab: IFacesTab) => {
     dispatch(faceActions.changeTab(tab));
   };

@@ -1,22 +1,21 @@
-import React, { Component } from "react";
+import { debounce, throttle } from "lodash";
 import PropTypes from "prop-types";
-import debounce from "lodash.debounce";
-import throttle from "lodash.throttle";
+import React, { Component } from "react";
 
-import Tile from "./components/Tile/Tile";
-import GroupHeader from "./components/GroupHeader/GroupHeader";
 import calcRenderableItems from "./calcRenderableItems";
+import GroupHeader from "./components/GroupHeader/GroupHeader";
+import Tile from "./components/Tile/Tile";
 import computeLayout from "./computeLayout";
 import computeLayoutGroups from "./computeLayoutGroups";
+import styles from "./styles.module.css";
+import getScrollSpeed from "./utils/getScrollSpeed";
 import getUrl from "./utils/getUrl";
 import sortByDate from "./utils/sortByDate";
-import getScrollSpeed from "./utils/getScrollSpeed";
-import styles from "./styles.module.css";
 
-export function addTempElementsToGroup(photosGroupedByDate) {
+export function addTempElementsToGroups(photosGroupedByDate) {
   photosGroupedByDate.forEach(group => {
-    for (let i = 0; i < group.numberOfItems; i+= 1) {
-      group.items.push({ id: i, aspectRation: 1, isTemp: true });
+    for (let i = 0; i < group.numberOfItems; i += 1) {
+      group.items.push({ id: i, aspectRatio: 1, isTemp: true });
     }
   });
 }
@@ -24,8 +23,8 @@ export function addTempElementsToGroup(photosGroupedByDate) {
 export function addTempElementsToFlatList(photosCount) {
   const tempPhotos = [];
 
-  for (let i = 0; i < photosCount; i+= 1) {
-    tempPhotos.push({ id: i, aspectRation: 1, isTemp: true });
+  for (let i = 0; i < photosCount; i += 1) {
+    tempPhotos.push({ id: i, aspectRatio: 1, isTemp: true });
   }
 
   return tempPhotos;
@@ -58,7 +57,7 @@ export default class Pig extends Component {
     // check grouping ability
     if (props.groupByDate && !this.imageData[0].items) {
       // eslint-disable-next-line no-console
-      console.error(`Data provided is not grouped yet. Please check the docs, you"ll need to use groupify.js`)
+      console.error(`Data provided is not grouped yet. Please check the docs, you'll need to use groupify.js`);
     }
 
     if (!props.groupByDate && this.imageData[0].items) {
@@ -70,7 +69,7 @@ export default class Pig extends Component {
       renderedItems: [],
       selectedItems: [],
       scrollSpeed: "slow",
-      activeTileUrl: null
+      activeTileUrl: null,
     }
 
     this.scrollThrottleMs = 300;
@@ -160,9 +159,9 @@ export default class Pig extends Component {
   }
 
   onScroll = () => {
-    this.previousYOffset = this.latestYOffset || window.scrollY;
-    this.latestYOffset = window.scrollY;
-    this.scrollDirection = (this.latestYOffset > this.previousYOffset) ? "down" : "up";
+    this.previousYOffset = this.latestYOffset || window.pageYOffset;
+    this.latestYOffset = window.pageYOffset;
+    this.scrollDirection = this.latestYOffset > this.previousYOffset ? "down" : "up";
 
     window.requestAnimationFrame(() => {
       this.setRenderedItems(this.imageData);
@@ -176,41 +175,35 @@ export default class Pig extends Component {
       // dismiss any active Tile
       const { activeTileUrl } = this.state;
       if (activeTileUrl) this.setState({ activeTileUrl: null });
-    })
-  }
+    });
+  };
 
   onResize = () => {
     this.imageData = this.getUpdatedImageLayout();
     this.setRenderedItems(this.imageData);
-    this.container.style.height = `${this.totalHeight }px`; // set the container height again based on new layout
+    this.container.style.height = `${this.totalHeight}px`; // set the container height again based on new layout
     this.containerWidth = this.container.offsetWidth;
     this.containerOffsetTop = this.container.offsetTop;
     this.windowHeight = window.innerHeight;
-  }
+  };
 
   getUpdatedImageLayout() {
     const wrapperWidth = this.container.offsetWidth;
 
     if (this.settings.groupByDate) {
-      const {
-        imageData,
-        newTotalHeight
-      } = computeLayoutGroups({
+      const { imageData, newTotalHeight } = computeLayoutGroups({
         wrapperWidth,
         minAspectRatio: this.minAspectRatio,
         imageData: this.imageData,
         settings: this.settings,
-        scaleOfImages: this.scaleOfImages
+        scaleOfImages: this.scaleOfImages,
       });
 
       this.totalHeight = newTotalHeight;
       return imageData;
     }
 
-    const {
-      imageData,
-      newTotalHeight
-    } = computeLayout({
+    const { imageData, newTotalHeight } = computeLayout({
       wrapperWidth,
       minAspectRatio: this.minAspectRatio,
       imageData: this.imageData,
@@ -223,6 +216,16 @@ export default class Pig extends Component {
 
     return imageData;
   }
+
+  defaultHandleSelection = item => {
+    let { newSelectedItems } = this.state;
+    if (newSelectedItems.includes(item)) {
+      newSelectedItems = newSelectedItems.filter(value => value !== item);
+    } else {
+      newSelectedItems = newSelectedItems.concat(item);
+    }
+    this.setState({ selectedItems: newSelectedItems });
+  };
 
   defaultHandleClick = (event, item) => {
     // if an image is already the width of the container, don't expand it on click
@@ -256,8 +259,9 @@ export default class Pig extends Component {
         handleSelection={this.handleSelection}
         selectable={this.selectable}
         selected={
-          selectedItems ?
-            selectedItems.findIndex(selectedItem => selectedItem.id === item.id) >= 0 : stateSelectedItems.includes(item)
+          selectedItems
+          ? selectedItems.findIndex(selectedItem => selectedItem.id === item.id) >= 0
+          : stateSelectedItems.includes(item)
         }
         activeTileUrl={activeTileUrl}
         settings={this.settings}

@@ -51,7 +51,7 @@ export const ApiLoginPostSchema = z.object({
   password: z.string(),
 });
 
-const ApiLoginResponseSchema = z.object({
+export const ApiLoginResponseSchema = z.object({
   refresh: z.string(),
   access: z.string(),
 });

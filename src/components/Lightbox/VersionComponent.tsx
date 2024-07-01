@@ -1,10 +1,10 @@
 import { Anchor, Button, Divider, Group, Modal, Stack, Text } from "@mantine/core";
-import { IconCamera as Camera, IconPhoto as Photo } from "@tabler/icons-react";
+import { IconPhoto as Photo } from "@tabler/icons-react";
 import React, { useState } from "react";
 
-import { deleteDuplicateImage } from "@/actions/photosActions";
 import type { Photo as PhotoType } from "@/@types/photos";
 import { serverAddress } from "@/api/apiClient";
+import { useDeleteDuplicatePhotoMutation } from "@/api/endpoints/photos/delete";
 import { useAppDispatch } from "@/store/store";
 import { FileInfoComponent } from "./FileInfoComponent";
 
@@ -16,6 +16,7 @@ export function VersionComponent(props: Readonly<{ photoDetail: PhotoType }>) {
   const [openDeleteDialogState, setOpenDeleteDialogState] = useState(false);
   const [imageHash, setImageHash] = useState("");
   const [path, setPath] = useState("");
+  const [deleteDuplicatePhoto] = useDeleteDuplicatePhotoMutation();
 
   const openDeleteDialog = (hash, filePath) => {
     setOpenDeleteDialogState(true);
@@ -109,7 +110,7 @@ export function VersionComponent(props: Readonly<{ photoDetail: PhotoType }>) {
           <Button
             color="red"
             onClick={() => {
-              dispatch(deleteDuplicateImage(imageHash, path));
+              deleteDuplicatePhoto({ image_hash: imageHash, path });
               setOpenDeleteDialogState(false);
             }}
           >

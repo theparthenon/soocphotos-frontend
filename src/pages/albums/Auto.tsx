@@ -25,8 +25,11 @@ export default function AlbumAuto() {
   const [deleteAutoAlbum] = useDeleteAutoAlbumMutation();
 
   function deleteAlbum(album) {
+    if (!album) {
+      throw new Error("album is null or undefined");
+    }
     setAutoAlbumID(album.id);
-    setAutoAlbumTitle(album.title);
+    setAutoAlbumTitle(album.title || ""); // handle null or undefined title
     showDeleteDialog();
   }
 
@@ -45,7 +48,7 @@ export default function AlbumAuto() {
 
     return (
       <div key={key} style={style}>
-        <Link key={album.id} to={`/event/${album.id}/`}>
+        <Link key={album.id} to={`/albums/auto/${album.id}/`}>
           <Tile
             video={album.photos.video === true}
             height={entrySquareSize - 10}

@@ -1,9 +1,11 @@
-import type { BaseQueryResult } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { BaseQueryFn, FetchArgs } from "@reduxjs/toolkit/query/react";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import sessionStorage from "redux-persist/es/storage/session";
+
 
 import type { IApiDeleteUserPost, IApiLoginPost, IApiLoginResponse } from "@/@types/auth";
+import { ApiLoginResponseSchema } from "@/@types/auth";
 import type {
   IClusterFacesResponse,
   IDeleteFacesRequest,
@@ -32,48 +34,40 @@ import type {
 import type { IWorkerAvailabilityResponse } from "@/@types/job";
 import { EndpointUrls, Endpoints } from "@/constants/api.constant";
 import { Server } from "./apiClient";
+import session from "redux-persist/lib/storage/session";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "/api/",
-  credentials: "include",
-
-  prepareHeaders: (headers, { getState, endpoint }) => {
-    const { user } = getState() as RootState;
-    const { access } = (getState() as RootState).auth;
-    if (access !== null && user && endpoint !== "refresh") {
-      headers.set("Authorization", `Bearer ${access.token}`);
+  prepareHeaders: async (headers, { endpoint }) => {
+    const accessToken = await sessionStorage.getItem("access");
+    if (accessToken !== null && endpoint !== "refresh") {
+      headers.set("Authorization", `Bearer ${accessToken}`);
     }
+
     return headers;
   },
 });
 
-export const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
     // Try to get a new token
-    const refreshToken: string | undefined = (api.getState() as RootState).auth?.refresh?.token;
+    const refreshToken = await sessionStorage.getItem("refresh");
 
     if (refreshToken) {
-      const refreshResult = await baseQuery(
-        {
-          url: EndpointUrls.authRefresh,
-          method: "POST",
-          body: {
-            refresh: refreshToken,
-          },
-        },
+      const refreshResult = (await baseQuery(
+        { url: "/auth/token/refresh/", method: "POST", body: { refresh: refreshToken } },
         api,
         extraOptions
-      );
+      )) as { data: { access: string } };
 
       if (refreshResult.data) {
-        // Store the new token
-        api.dispatch(tokenReceived(refreshResult.data));
+        sessionStorage.setItem("access", refreshResult.data.access);
 
         // Retry the initial query
         result = await baseQuery(args, api, extraOptions);
@@ -88,17 +82,19 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Albums", "Faces", "PeopleAlbums", "Photos", "UserList", "UserSelfDetails"],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     [Endpoints.login]: builder.mutation<IApiLoginResponse, IApiLoginPost>({
-      query: (body) => ({
+      query: body => ({
         url: "/auth/token/obtain/",
         method: "POST",
         body,
       }),
-      transformResponse: (result: BaseQueryResult<any>) => {
-        Server.defaults.headers.common.Authorization = `Bearer ${result.access}`;
+      transformResponse: (response: IApiLoginResponse) => {
+        const data = ApiLoginResponseSchema.parse(response);
+        sessionStorage.setItem("access", data.access);
+        sessionStorage.setItem("refresh", data.refresh);
 
-        return result;
+        return data;
       },
     }),
     [Endpoints.generateAutoAlbumTitle]: builder.query<IGenerateEventAlbumsTitlesResponse, void>({
@@ -141,18 +137,18 @@ export const api = createApi({
       invalidatesTags: ["UserList"],
     }),
     [Endpoints.uploadExists]: builder.query<boolean, string>({
-      query: (hash) => EndpointUrls.photosExists + hash,
+      query: hash => `/photos/exists/${hash}/`,
       transformResponse: (response: string) => UploadExistResponse.parse(response).exists,
     }),
     [Endpoints.uploadFinished]: builder.mutation<void, FormData>({
-      query: (form_data) => ({
+      query: form_data => ({
         url: "/upload/complete/",
         method: "POST",
         body: form_data,
       }),
     }),
     [Endpoints.upload]: builder.mutation<IUploadResponse, IUploadOptions>({
-      query: (options) => ({
+      query: options => ({
         url: "/upload/",
         method: "POST",
         body: options.form_data,
@@ -170,13 +166,13 @@ export const api = createApi({
     }),
     [Endpoints.incompleteFaces]: builder.query<IIncompletePersonFaceListResponse, IIncompletePersonFaceListRequest>({
       query: ({ inferred = false }) => ({
-        url: `/faces/incomplete/?inferred=${inferred}`,
+        url: `faces/incomplete/?inferred=${inferred}`,
       }),
       providesTags: ["Faces"],
     }),
     [Endpoints.fetchFaces]: builder.query<IPersonFaceListResponse, IPersonFaceListRequest>({
       query: ({ person, page = 0, inferred = false, orderBy = "confidence" }) => ({
-        url: `/faces/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
+        url: `faces/?person=${person}&page=${page}&inferred=${inferred}&order_by=${orderBy}`,
       }),
       providesTags: ["Faces"],
     }),

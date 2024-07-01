@@ -45,12 +45,12 @@ const findPath = (tree: DirTree[], path: string): boolean => {
 export function ModalUserEdit(props: Props) {
   const {
     isOpen,
-    updateAndScan,
-    selectedNodeId,
+    updateAndScan = false,
+    selectedNodeId = "",
     onRequestClose: closeModal,
     userList,
     createNew,
-    firstTimeSetup,
+    firstTimeSetup = false,
     userToEdit,
   } = props;
   const [treeData, setTreeData] = useState<DirTree[]>([]);
@@ -335,9 +335,3 @@ export function ModalUserEdit(props: Props) {
     </Modal>
   );
 }
-
-ModalUserEdit.defaultProps = {
-  updateAndScan: false,
-  selectedNodeId: "",
-  firstTimeSetup: false,
-};

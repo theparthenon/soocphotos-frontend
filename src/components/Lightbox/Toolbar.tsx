@@ -10,8 +10,9 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 
-import { setPhotosFavorite, setPhotosHidden } from "@/actions/photosActions";
 import { shareAddress } from "@/api/apiClient";
+import { useSetFavoritePhotosMutation } from "@/api/endpoints/photos/favorite";
+import { useSetPhotosHiddenMutation } from "@/api/endpoints/photos/visibility";
 import { playerActions } from "@/store/player/playerSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { copyToClipboard } from "@/utils/utils";
@@ -27,9 +28,11 @@ export function Toolbar(props: Props) {
   const { favorite_min_rating: favoriteMinRating } = useAppSelector(store => store.user.userSelfDetails);
   const { photosDetail, lightboxSidebarShow, closeSidepanel } = props;
   const { playing: playerPlaying, loading: playerLoading } = useAppSelector(store => store.player);
+  const [setPhotosHidden] = useSetPhotosHiddenMutation();
+  const [setFavoritePhotos] = useSetFavoritePhotosMutation();
 
   function playButton(photo) {
-    if (!photo || photo.embedded_media.length === 0) {
+    if (!photo) {
       return null;
     }
     function togglePlay() {
@@ -70,7 +73,7 @@ export function Toolbar(props: Props) {
           onClick={() => {
             const { image_hash: imageHash } = photosDetail;
             const val = !photosDetail.hidden;
-            dispatch(setPhotosHidden([imageHash], val));
+            setPhotosHidden({ image_hashes: [imageHash], hidden: val });
           }}
         >
           {photosDetail.hidden ? <EyeOff color="red" /> : <Eye color="grey" />}
@@ -81,7 +84,7 @@ export function Toolbar(props: Props) {
           onClick={() => {
             const { image_hash: imageHash } = photosDetail;
             const val = !(photosDetail.rating >= favoriteMinRating);
-            dispatch(setPhotosFavorite([imageHash], val));
+            setFavoritePhotos({ image_hashes: [imageHash], favorite: val });
           }}
         >
           <Star color={photosDetail.rating >= favoriteMinRating ? "yellow" : "grey"} />

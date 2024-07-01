@@ -1,4 +1,5 @@
 import { useFetchStorageStatsQuery } from '@/api/api';
+import { formatBytes } from '@/utils/utils';
 import { Progress, Tooltip } from '@mantine/core';
 
 export default function SideBarBottomContent(){
@@ -15,7 +16,7 @@ export default function SideBarBottomContent(){
   return (
     <>
       <Tooltip
-        label={ storageStats.used_storage + " of " + storageStats.total_storage + " used" }
+        label={ formatBytes(storageStats.used_storage) + " of " + formatBytes(storageStats.total_storage) + " used" }
       >
         <Progress
           style={{ margin: 10 }}

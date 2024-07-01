@@ -3,7 +3,6 @@ import {
     Badge,
     Button,
     Card,
-    Collapse,
     Container,
     Dialog,
     Divider,
@@ -11,24 +10,20 @@ import {
     Grid,
     Group,
     HoverCard,
-    List,
     Loader,
     Menu,
     Modal,
     Space,
     Stack,
     Text,
-    TextInput,
     Title,
   } from "@mantine/core";
   import { useDisclosure } from "@mantine/hooks";
   import {
     IconBook as Book,
-    IconBrandNextcloud as BrandNextcloud,
     IconCheck as Check,
     IconChevronDown as ChevronDown,
     IconFaceId as FaceId,
-    IconFolder as Folder,
     IconQuestionMark as QuestionMark,
     IconRefresh as Refresh,
     IconRefreshDot as RefreshDot,
@@ -36,9 +31,9 @@ import {
   } from "@tabler/icons-react";
   import React, { useEffect, useState } from "react";
 
-  import { scanAllPhotos, scanPhotos } from "@/actions/photosActions";
   import { deleteMissingPhotos } from "@/actions/utilActions";
   import { useGenerateAutoAlbumsMutation } from "@/api/endpoints/albums/auto";
+  import { useRescanPhotosMutation, useScanPhotosMutation } from "@/api/endpoints/photos/scan";
   import { api, useWorkerQuery } from "@/api/api";
   import { serverAddress } from "@/api/apiClient";
   import { useUpdateUserMutation } from "@/api/endpoints/user";
@@ -48,19 +43,6 @@ import {
   import { notification } from "@/services/notifications";
   import { useAppDispatch, useAppSelector } from "@/store/store";
   import { IUser } from "@/@types/user";
-
-  function BadgeIcon(details: IUser, isSuccess: boolean, isError: boolean, isFetching: boolean) {
-    if (isSuccess) {
-      return <Check />;
-    }
-    if (isError) {
-      return <X />;
-    }
-    if (isFetching) {
-      return <RefreshDot />;
-    }
-    return <QuestionMark />;
-  }
 
   export default function Library() {
     const [isOpen, { open, close }] = useDisclosure(false);
@@ -74,16 +56,10 @@ import {
     const [workerAvailability, setWorkerAvailability] = useState(false);
     const statusPhotoScan = useAppSelector(state => state.util.statusPhotoScan);
     const [generateAutoAlbums] = useGenerateAutoAlbumsMutation();
+    const [scanPhotos] = useScanPhotosMutation();
+    const [rescanPhotos] = useRescanPhotosMutation();
     const { data: countStats = COUNT_STATS_DEFAULTS } = useFetchCountStatsQuery();
     const [updateUser] = useUpdateUserMutation();
-
-    const onPhotoScanButtonClick = () => {
-      dispatch(scanPhotos());
-    };
-
-    const onPhotoFullScanButtonClick = () => {
-      dispatch(scanAllPhotos());
-    };
 
     const onGenerateEventAlbumsButtonClick = () => {
       dispatch({ type: "SET_WORKER_AVAILABILITY", payload: false });
@@ -179,7 +155,7 @@ import {
                 <Grid.Col span={2}>
                   <Group gap={0}>
                     <Button
-                      onClick={onPhotoScanButtonClick}
+                      onClick={() => scanPhotos()}
                       disabled={!workerAvailability}
                       leftSection={<Refresh />}
                       variant="filled"
@@ -197,7 +173,7 @@ import {
                         </ActionIcon>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Item leftSection={<Refresh size="1rem" />} onClick={onPhotoFullScanButtonClick}>
+                        <Menu.Item leftSection={<Refresh size="1rem" />} onClick={() => rescanPhotos()}>
                           {statusPhotoScan.status && statusPhotoScan.added ? <Loader /> : null}
                           {statusPhotoScan.added
                             ? `Scanning photos (${statusPhotoScan.added}/${

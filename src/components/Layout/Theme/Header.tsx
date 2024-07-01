@@ -15,6 +15,7 @@ import { ChunkedUploadButton } from "./ChunkedUploadButton";
 import { WorkerIndicator } from "./WorkerIndicator";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { serverAddress } from "@/api/apiClient";
+import { useEffect } from "react";
 
 type Props = Readonly<{
     opened: boolean;
@@ -25,6 +26,12 @@ export default function Header({opened, toggle}: Props) {
     const dispatch = useAppDispatch();
     const userSelfDetails = useAppSelector(state => state.user.userSelfDetails);
     const auth = useAppSelector(state => state.auth);
+
+    useEffect(() => {
+        if (auth.access) {
+          dispatch(api.endpoints.fetchUserSelfDetails.initiate(auth.access.user_id));
+        }
+    }, [auth.access, dispatch]);
 
     return (
         <AppShell.Header px={10}>

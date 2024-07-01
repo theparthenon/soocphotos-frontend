@@ -35,7 +35,7 @@ export function FaceComponent({
 
   const labelProbabilityColor = calculateProbabiltyColor(cell.person_label_probability);
   const [tooltipOpened, setTooltipOpened] = useState(false);
-  const { activeTab } = useAppSelector(store => store.faces);
+  const { activeTab } = useAppSelector(store => store.face);
   // TODO: janky shit going on in the next line!
   const faceImageSrc = `${serverAddress}/media/faces/${_.reverse(cell.image.split("/"))[0]}`;
 

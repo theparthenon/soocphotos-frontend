@@ -35,7 +35,7 @@ export function HeaderComponent({
   setSelectedFaces,
   selectedFaces,
 }: Readonly<Props>) {
-  const { activeTab } = useAppSelector(store => store.faces);
+  const { activeTab } = useAppSelector(store => store.face);
   const dispatch = useAppDispatch();
   const [checked, setChecked] = useState(false);
   const [renameDialogVisible, { open: showRenameDialog, close: hideRenameDialog }] = useDisclosure(false);

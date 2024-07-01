@@ -1,14 +1,12 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { createSelector } from "@reduxjs/toolkit";
 
-import type { RootState } from '@/store/store';
+import type { RootState } from "@/store/store";
 // eslint-disable-next-line import/no-cycle
-import { selectSelf } from '@/store/store';
-import { isTokenExpired } from '@/utils/auth';
+import { selectSelf } from "@/store/store";
+import { isTokenExpired } from "@/utils/auth";
 
 export const selectIsAuthenticated = createSelector(selectSelf, (state: RootState) =>
-  state.auth.refresh !== null && state.auth.refresh.exp
-    ? !isTokenExpired(state.auth.refresh.exp)
-    : false
+  state.auth.refresh !== null && state.auth.refresh.exp ? !isTokenExpired(state.auth.refresh.exp) : false
 );
 export const accessToken = createSelector(selectSelf, (state: RootState) => state.auth.access);
 export const isAccessTokenExpired = createSelector(selectSelf, (state: RootState) =>
@@ -16,13 +14,8 @@ export const isAccessTokenExpired = createSelector(selectSelf, (state: RootState
 );
 export const refreshToken = createSelector(selectSelf, (state: RootState) => state.auth.refresh);
 export const isRefreshTokenExpired = createSelector(selectSelf, (state: RootState) =>
-  state.auth.refresh !== null && state.auth?.refresh?.exp
-    ? isTokenExpired(state.auth.refresh.exp)
-    : true
+  state.auth.refresh !== null && state.auth?.refresh?.exp ? isTokenExpired(state.auth.refresh.exp) : true
 );
-export const selectAuthErrors = createSelector(
-  selectSelf,
-  (state: RootState) => state.auth.error ?? null
-);
+export const selectAuthErrors = createSelector(selectSelf, (state: RootState) => state.auth.error ?? null);
 export const selectAuth = createSelector(selectSelf, (state: RootState) => state.auth);
 export const selectAuthAccess = createSelector(selectSelf, (state: RootState) => state.auth.access);

@@ -17,7 +17,7 @@ export function FaceTooltip(
     cell,
     children = null
   }: Props) {
-  const { activeTab } = useAppSelector(store => store.faces);
+  const { activeTab } = useAppSelector(store => store.face);
 
   const confidencePercentageLabel =
     activeTab === "inferred"

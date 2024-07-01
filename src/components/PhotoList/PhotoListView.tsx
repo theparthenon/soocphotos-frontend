@@ -324,7 +324,7 @@ function PhotoListViewComponent({
               selectedItems={selectionStateRef.current.selectedItems}
               handleSelection={handleSelection}
               handleClick={handleClick}
-              scaleOfImages={1}
+              scaleOfImages={userSelfDetails.image_scale}
               groupByDate={isDateView}
               getUrl={getUrl}
               toprightoverlay={FavoritedOverlay}
