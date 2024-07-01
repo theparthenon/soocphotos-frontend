@@ -11,10 +11,7 @@ interface AlbumGridConfig {
   gridHeight: number;
 }
 
-function calculateGridValues(
-  width: number,
-  showSidebar: boolean
-): { columnWidth: number; squareSize: number } {
+function calculateGridValues(width: number, showSidebar: boolean): { columnWidth: number; squareSize: number } {
   let entries = 6;
   if (width < 600) {
     entries = 2;
@@ -39,7 +36,7 @@ export function useAlbumListGridConfig(albums: Object[]): AlbumGridConfig {
   const [numberOfRows, setNumberOfRows] = useState(0);
   const [gridHeight, setGridHeight] = useState(0);
 
-  const showSidebar = useAppSelector((store) => store.ui.showSidebar);
+  const showSidebar = useAppSelector(store => store.ui.showSidebar);
 
   useEffect(() => {
     const { columnWidth, squareSize } = calculateGridValues(width, showSidebar);

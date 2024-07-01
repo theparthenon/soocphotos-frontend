@@ -172,8 +172,7 @@ export default function reducer(state = initialState, action = DEFAULT_ACTION) {
     }
     case "FETCH_PLACE_ALBUMS_FULFILLED": {
       newAlbum = { ...state.albumsPlace };
-      newAlbum[parseInt(action.payload.results.id, 10)] =
-        action.payload.results;
+      newAlbum[parseInt(action.payload.results.id, 10)] = action.payload.results;
       return {
         ...state,
         fetchingAlbumsPlace: false,

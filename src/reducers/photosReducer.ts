@@ -132,9 +132,7 @@ export function photos(
     case "FETCH_DATE_ALBUMS_RETRIEVE_FULFILLED": {
       const { page } = action.payload;
       newPhotosGroupedByDate = [...state.photosGroupedByDate];
-      indexToReplace = newPhotosGroupedByDate.findIndex(
-        (group) => group.id === action.payload.datePhotosGroup.id
-      );
+      indexToReplace = newPhotosGroupedByDate.findIndex(group => group.id === action.payload.datePhotosGroup.id);
       const groupToChange = newPhotosGroupedByDate[indexToReplace];
       if (!groupToChange) {
         return {
@@ -211,17 +209,17 @@ export function photos(
       newPhotosGroupedByDate = [...state.photosGroupedByDate];
       newPhotosFlat = [...state.photosFlat];
 
-      updatedPhotoDetails.forEach((photoDetails) => {
-        newPhotosFlat = newPhotosFlat.map((photo) =>
+      updatedPhotoDetails.forEach(photoDetails => {
+        newPhotosFlat = newPhotosFlat.map(photo =>
           photo.id === photoDetails.image_hash ? { ...photo, rating: photoDetails.rating } : photo
         );
-        newPhotosGroupedByDate = newPhotosGroupedByDate.map((group) =>
-          // Create a new group object if the photo exists in its items (don"t mutate).
-          group.items.findIndex((photo) => photo.id === photoDetails.image_hash) === -1
+        newPhotosGroupedByDate = newPhotosGroupedByDate.map(group =>
+          // Create a new group object if the photo exists in its items (don't mutate).
+          group.items.findIndex(photo => photo.id === photoDetails.image_hash) === -1
             ? group
             : {
                 ...group,
-                items: group.items.map((item) =>
+                items: group.items.map(item =>
                   item.id !== photoDetails.image_hash
                     ? item
                     : {
@@ -233,17 +231,17 @@ export function photos(
         );
 
         if (state.fetchedPhotosetType === PhotosetType.FAVORITES && !action.payload.favorite) {
-          // Remove the photo from the photo set. (Ok to mutate, since we"ve already created a new group.)
-          newPhotosGroupedByDate = newPhotosGroupedByDate.map((group) => ({
+          // Remove the photo from the photo set. (Ok to mutate, since we've already created a new group.)
+          newPhotosGroupedByDate = newPhotosGroupedByDate.map(group => ({
             ...group,
-            items: group.items.filter((item) => item.id !== photoDetails.image_hash),
+            items: group.items.filter(item => item.id !== photoDetails.image_hash),
           }));
-          newPhotosFlat = newPhotosFlat.filter((item) => item.id !== photoDetails.image_hash);
+          newPhotosFlat = newPhotosFlat.filter(item => item.id !== photoDetails.image_hash);
         }
       });
 
       // Keep only groups that still contain photos
-      newPhotosGroupedByDate = newPhotosGroupedByDate.filter((group) => group.items.length > 0);
+      newPhotosGroupedByDate = newPhotosGroupedByDate.filter(group => group.items.length > 0);
 
       return {
         ...state,

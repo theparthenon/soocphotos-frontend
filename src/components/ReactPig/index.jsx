@@ -159,8 +159,8 @@ export default class Pig extends Component {
   }
 
   onScroll = () => {
-    this.previousYOffset = this.latestYOffset || window.pageYOffset;
-    this.latestYOffset = window.pageYOffset;
+    this.previousYOffset = this.latestYOffset || window.scrollY;
+    this.latestYOffset = window.scrollY;
     this.scrollDirection = this.latestYOffset > this.previousYOffset ? "down" : "up";
 
     window.requestAnimationFrame(() => {

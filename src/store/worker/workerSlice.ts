@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-import { api } from '@/api/api';
-import { IWorkerAvailabilityResponse, WorkerAvailabilityResponse } from '@/@types/job';
+import { api } from "@/api/api";
+import { IWorkerAvailabilityResponse, WorkerAvailabilityResponse } from "@/@types/job";
 
 const initialState: IWorkerAvailabilityResponse = {
   status: true,
@@ -10,7 +10,7 @@ const initialState: IWorkerAvailabilityResponse = {
 };
 
 const workerSlice = createSlice({
-  name: 'worker',
+  name: "worker",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

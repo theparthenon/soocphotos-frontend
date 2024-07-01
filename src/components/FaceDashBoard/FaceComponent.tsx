@@ -59,9 +59,7 @@ export function FaceComponent({
       className={
         isSelected ? "faceComponentBoxSelected" : "faceComponentBox"
       }
-      style={{
-        padding,
-      }}
+      style={{ padding, }}
     >
       <Center>
         <FaceTooltip tooltipOpened={tooltipOpened} cell={cell}>

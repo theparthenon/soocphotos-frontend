@@ -22,7 +22,7 @@ export function Tile({ video, width, height, style, image_hash }: Props) {
         width={width}
         height={height}
         style={style}
-        src={`${serverAddress}/media//${image_hash}`}
+        src={`${serverAddress}/media/thumbnails/${image_hash}`}
         autoPlay
         muted
         loop

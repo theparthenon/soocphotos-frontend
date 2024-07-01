@@ -1,9 +1,9 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import { api } from '@/api/api';
-import { UserSchema } from '@/@types/user';
-import type { IUser, IUserState } from '@/@types/user';
+import { api } from "@/api/api";
+import { UserSchema } from "@/@types/user";
+import type { IUser, IUserState } from "@/@types/user";
 
 const initialState: IUserState = {
   userSelfDetails: {} as IUser,
@@ -11,7 +11,7 @@ const initialState: IUserState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setRules: (state, action: PayloadAction<string>) => ({
