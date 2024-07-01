@@ -44,6 +44,8 @@
     "leaflet": "^1.9.4",
     "librephotos-react-image-lightbox": "^1.0.0",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "lottie-web": "^5.12.2",
     "luxon": "^3.4.4",
     "patch-package": "^8.0.0",

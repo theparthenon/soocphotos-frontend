@@ -297,7 +297,7 @@ function PhotoListViewComponent({
           type={ScrollerType.enum.date}
         >
           <div style={{ padding: 10 }}>
-            <Pig
+          <Pig
               ref={pigRef}
               className="scrollscrubbertarget"
               imageData={photos}

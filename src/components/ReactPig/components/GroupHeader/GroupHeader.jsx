@@ -1,9 +1,13 @@
-import PropTypes from "prop-types";
 import React from "react";
+import PropTypes from "prop-types";
 
 import styles from "./styles.module.css";
 
-function GroupHeader({ settings, group, activeTileUrl }) {
+export default function GroupHeader ({
+  settings,
+  group,
+  activeTileUrl,
+}) {
   return (
     <header
       className={styles.headerPositioner}
@@ -19,8 +23,12 @@ function GroupHeader({ settings, group, activeTileUrl }) {
           zIndex: activeTileUrl ? 1 : 2,
         }}
       >
-        <span className={`${styles.location} pig-header_location`}>{group.location}</span>
-        <span className={`${styles.date} pig-header_date`}>{group.date}</span>
+        <span className={`${styles.location} pig-header_location`}>
+          {group.location}
+        </span>
+        <span className={`${styles.date} pig-header_date`}>
+          {group.date}
+        </span>
       </div>
     </header>
   );
@@ -41,5 +49,3 @@ GroupHeader.propTypes = {
   }).isRequired,
   activeTileUrl: PropTypes.string.isRequired,
 };
-
-export default GroupHeader;

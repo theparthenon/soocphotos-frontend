@@ -1,30 +1,33 @@
-import { debounce, throttle } from "lodash";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 
-import calcRenderableItems from "./calcRenderableItems";
-import GroupHeader from "./components/GroupHeader/GroupHeader";
 import Tile from "./components/Tile/Tile";
+import GroupHeader from "./components/GroupHeader/GroupHeader";
+import calcRenderableItems from "./calcRenderableItems";
 import computeLayout from "./computeLayout";
 import computeLayoutGroups from "./computeLayoutGroups";
-import styles from "./styles.module.css";
-import getScrollSpeed from "./utils/getScrollSpeed";
 import getUrl from "./utils/getUrl";
 import sortByDate from "./utils/sortByDate";
+import getScrollSpeed from "./utils/getScrollSpeed";
+import styles from "./styles.module.css";
 
-export function addTempElementsToGroups(photosGroupedByDate) {
+export function addTempElementsToGroup(photosGroupedByDate) {
   photosGroupedByDate.forEach(group => {
-    for (let i = 0; i < group.numberOfItems; i += 1) {
-      group.items.push({ id: i, aspectRatio: 1, isTemp: true });
+    for (let i = 0; i < group.numberOfItems; i+= 1) {
+      group.items.push({ id: i, aspectRation: 1, isTemp: true });
     }
   });
 }
 
 export function addTempElementsToFlatList(photosCount) {
   const tempPhotos = [];
-  for (let i = 0; i < photosCount; i += 1) {
-    tempPhotos.push({ id: i, aspectRatio: 1, isTemp: true });
+
+  for (let i = 0; i < photosCount; i+= 1) {
+    tempPhotos.push({ id: i, aspectRation: 1, isTemp: true });
   }
+
   return tempPhotos;
 }
 
@@ -47,6 +50,7 @@ export default class Pig extends Component {
     this.scaleOfImages = props.scaleOfImages || 1;
     this.updateGroups = props.updateGroups || function onUpdateGroups() {};
     this.updateItems = props.updateItems || function onUpdateItems() {};
+
     // if sortFunc has been provided as a prop, use it
     if (props.sortFunc) this.imageData.sort(props.sortFunc);
     else if (props.sortByDate) this.imageData = sortByDate(this.imageData);
@@ -54,8 +58,9 @@ export default class Pig extends Component {
     // check grouping ability
     if (props.groupByDate && !this.imageData[0].items) {
       // eslint-disable-next-line no-console
-      console.error(`Data provided is not grouped yet. Please check the docs, you'll need to use groupify.js`);
+      console.error(`Data provided is not grouped yet. Please check the docs, you"ll need to use groupify.js`)
     }
+
     if (!props.groupByDate && this.imageData[0].items) {
       // eslint-disable-next-line no-console
       console.error(`Data provided is grouped, please include the groupByDate prop`);
@@ -65,10 +70,11 @@ export default class Pig extends Component {
       renderedItems: [],
       selectedItems: [],
       scrollSpeed: "slow",
-      activeTileUrl: null,
-    };
+      activeTileUrl: null
+    }
 
     this.scrollThrottleMs = 300;
+
     if (typeof window !== "undefined") {
       this.windowHeight = window.innerHeight;
     } else {
@@ -111,6 +117,7 @@ export default class Pig extends Component {
     this.setRenderedItems(this.imageData);
 
     if (typeof window === "undefined") return;
+
     window.addEventListener("scroll", this.throttledScroll);
     window.addEventListener("resize", this.debouncedResize);
   }
@@ -153,9 +160,9 @@ export default class Pig extends Component {
   }
 
   onScroll = () => {
-    this.previousYOffset = this.latestYOffset || window.pageYOffset;
-    this.latestYOffset = window.pageYOffset;
-    this.scrollDirection = this.latestYOffset > this.previousYOffset ? "down" : "up";
+    this.previousYOffset = this.latestYOffset || window.scrollY;
+    this.latestYOffset = window.scrollY;
+    this.scrollDirection = (this.latestYOffset > this.previousYOffset) ? "down" : "up";
 
     window.requestAnimationFrame(() => {
       this.setRenderedItems(this.imageData);
@@ -169,34 +176,41 @@ export default class Pig extends Component {
       // dismiss any active Tile
       const { activeTileUrl } = this.state;
       if (activeTileUrl) this.setState({ activeTileUrl: null });
-    });
-  };
+    })
+  }
 
   onResize = () => {
     this.imageData = this.getUpdatedImageLayout();
     this.setRenderedItems(this.imageData);
-    this.container.style.height = `${this.totalHeight}px`; // set the container height again based on new layout
+    this.container.style.height = `${this.totalHeight }px`; // set the container height again based on new layout
     this.containerWidth = this.container.offsetWidth;
     this.containerOffsetTop = this.container.offsetTop;
     this.windowHeight = window.innerHeight;
-  };
+  }
 
   getUpdatedImageLayout() {
     const wrapperWidth = this.container.offsetWidth;
 
     if (this.settings.groupByDate) {
-      const { imageData, newTotalHeight } = computeLayoutGroups({
+      const {
+        imageData,
+        newTotalHeight
+      } = computeLayoutGroups({
         wrapperWidth,
         minAspectRatio: this.minAspectRatio,
         imageData: this.imageData,
         settings: this.settings,
-        scaleOfImages: this.scaleOfImages,
+        scaleOfImages: this.scaleOfImages
       });
 
       this.totalHeight = newTotalHeight;
       return imageData;
     }
-    const { imageData, newTotalHeight } = computeLayout({
+
+    const {
+      imageData,
+      newTotalHeight
+    } = computeLayout({
       wrapperWidth,
       minAspectRatio: this.minAspectRatio,
       imageData: this.imageData,
@@ -206,18 +220,9 @@ export default class Pig extends Component {
     });
 
     this.totalHeight = newTotalHeight;
+
     return imageData;
   }
-
-  defaultHandleSelection = item => {
-    let { newSelectedItems } = this.state;
-    if (newSelectedItems.includes(item)) {
-      newSelectedItems = newSelectedItems.filter(value => value !== item);
-    } else {
-      newSelectedItems = newSelectedItems.concat(item);
-    }
-    this.setState({ selectedItems: newSelectedItems });
-  };
 
   defaultHandleClick = (event, item) => {
     // if an image is already the width of the container, don't expand it on click
@@ -234,8 +239,9 @@ export default class Pig extends Component {
   };
 
   renderTile = item => {
-    const { useLqip, selectedItems, thumbnailSize, toprightoverlay, bottomleftoverlay } = this.props;
+    const { useLqip, selectedItems, thumbnailSize, topRightOverlay, bottomLeftOverlay } = this.props;
     const { selectedItems: stateSelectedItems, activeTileUrl, scrollSpeed } = this.state;
+
     return (
       <Tile
         key={item.url}
@@ -250,22 +256,22 @@ export default class Pig extends Component {
         handleSelection={this.handleSelection}
         selectable={this.selectable}
         selected={
-          selectedItems
-            ? selectedItems.findIndex(selectedItem => selectedItem.id === item.id) >= 0
-            : stateSelectedItems.includes(item)
+          selectedItems ?
+            selectedItems.findIndex(selectedItem => selectedItem.id === item.id) >= 0 : stateSelectedItems.includes(item)
         }
         activeTileUrl={activeTileUrl}
         settings={this.settings}
         thumbnailSize={thumbnailSize}
         scrollSpeed={scrollSpeed}
-        toprightoverlay={toprightoverlay}
-        bottomleftoverlay={bottomleftoverlay}
+        topRightOverlay={topRightOverlay}
+        bottomLeftOverlay={bottomLeftOverlay}
       />
     );
   };
 
   renderGroup = group => {
     const { activeTileUrl } = this.state;
+
     return (
       <React.Fragment key={group.date}>
         <GroupHeader key={group.date} settings={this.settings} group={group} activeTileUrl={activeTileUrl} />
@@ -278,12 +284,14 @@ export default class Pig extends Component {
 
   render() {
     const { renderedItems } = this.state;
+
     return (
       <div className={styles.output} ref={this.containerRef}>
         {renderedItems.map(item => {
           if (this.settings.groupByDate) {
             return this.renderGroup(item);
           }
+
           return this.renderFlat(item);
         })}
       </div>
@@ -315,8 +323,8 @@ Pig.defaultProps = {
   updateGroups: null,
   updateItems: null,
   selectedItems: null,
-  toprightoverlay: null,
-  bottomleftoverlay: null,
+  topRightOverlay: null,
+  bottomLeftOverlay: null,
 };
 
 Pig.propTypes = {
@@ -343,6 +351,6 @@ Pig.propTypes = {
   updateGroups: PropTypes.func,
   updateItems: PropTypes.func,
   selectedItems: PropTypes.arrayOf(PropTypes.shape({})),
-  toprightoverlay: PropTypes.shape({}),
-  bottomleftoverlay: PropTypes.shape({}),
+  topRightOverlay: PropTypes.shape({}),
+  bottomLeftOverlay: PropTypes.shape({}),
 };
