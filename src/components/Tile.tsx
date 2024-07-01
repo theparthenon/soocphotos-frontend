@@ -1,20 +1,21 @@
+import { Image } from "@mantine/core";
 import type { CSSProperties, MouseEventHandler } from "react";
 import React from "react";
 
-import { Image } from "@mantine/core";
-
 import { serverAddress } from "@/api/apiClient";
 
+type DefaultProps = {
+  style: CSSProperties;
+  video: boolean;
+  onClick: (e: MouseEventHandler<HTMLElement>) => void;
+};
 type Props = {
   width: number;
   height: number;
   image_hash: string;
-  style?: CSSProperties;
-  video: boolean;
-  onClick?: (e: MouseEventHandler<HTMLElement>) => void;
-};
+} & Partial<DefaultProps>;
 
-export function Tile({ video = false, width, height, style = {}, image_hash }: Props) {
+export function Tile({ video, width, height, style, image_hash }: Props) {
   if (video) {
     return (
       <video

@@ -65,19 +65,27 @@ function PhotoListViewComponent({
 }: Props) {
   const { height } = useViewportSize();
   const pigRef = useRef<Pig>(null);
+
   const [lightboxImageIndex, setLightboxImageIndex] = useState(1);
   const [lightboxImageId, setLightboxImageId] = useState("");
   const [lightboxShow, setLightboxShow] = useState(false);
+
   const [modalAddToAlbumOpen, setModalAddToAlbumOpen] = useState(false);
+
   const [selectionState, setSelectionState] = useState<SelectionState>({ selectedItems: [], selectMode: false });
   const selectionStateRef = useRef(selectionState);
+
   const [dataForScrollIndicator, setDataForScrollIndicator] = useState<IScrollerData[]>([]);
+
   const gridHeight = useRef(200);
+
   const setScrollLocked = useScrollLock(false)[1];
+
   const [setUserAlbumCover] = useSetUserAlbumCoverMutation();
   const [setPersonAlbumCover] = useSetPersonAlbumCoverMutation();
 
   const route = useAppSelector(store => store.router);
+  const userSelfDetails = useAppSelector(store => store.user.userSelfDetails);
 
   const isDateView = photoset !== idx2hash;
   const photos = isDateView ? formatDateForPhotoGroups(photoset) : photoset;
@@ -105,6 +113,7 @@ function PhotoListViewComponent({
     if (pxHeight < 250) {
       return `${serverAddress}/media/thumbnails/${url.split(";")[0]}`;
     }
+
     return `${serverAddress}/media/optimized/${url.split(";")[0]}`;
   }, []);
 
@@ -146,6 +155,7 @@ function PhotoListViewComponent({
 
   const getDataForScrollIndicator = (): IScrollerData[] => {
     const scrollPositions: IScrollerData[] = [];
+
     if (pigRef.current) {
       // @ts-ignore
       pigRef.current.imageData.forEach((group: DatePhotosGroupSchema) => {
@@ -157,6 +167,7 @@ function PhotoListViewComponent({
         });
       });
     }
+
     return scrollPositions;
   };
 
@@ -177,22 +188,30 @@ function PhotoListViewComponent({
     // if an image is selectable, then handle shift click
     if (selectable && event.shiftKey) {
       const lastSelectedElement = selectionStateRef.current.selectedItems.at(-1);
+
       if (lastSelectedElement === undefined) {
         handleSelection(item);
+
         return;
       }
+
       const indexOfCurrentlySelectedItem = idx2hashRef.current.findIndex(image => image.id === item.id);
       const indexOfLastSelectedItem = idx2hashRef.current.findIndex(image => image.id === lastSelectedElement.id);
 
       if (indexOfCurrentlySelectedItem > indexOfLastSelectedItem) {
         handleSelections(idx2hashRef.current.slice(indexOfLastSelectedItem + 1, indexOfCurrentlySelectedItem + 1));
+
         return;
       }
+
       handleSelections(idx2hashRef.current.slice(indexOfCurrentlySelectedItem, indexOfLastSelectedItem));
+
       return;
     }
+
     if (selectionStateRef.current.selectMode) {
       handleSelection(item);
+
       return;
     }
 
@@ -224,7 +243,7 @@ function PhotoListViewComponent({
 
   return (
     <div>
-      <Box className="photoListBox" >
+      <Box className="photoListBox">
         {header || (
           <DefaultHeader
             // @ts-ignore

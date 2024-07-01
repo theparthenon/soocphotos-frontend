@@ -1,4 +1,3 @@
-import { IconPlayerPlay as PlayerPlay } from "@tabler/icons-react";
 import { Duration } from "luxon";
 import React from "react";
 
@@ -23,7 +22,6 @@ export function VideoOverlay({ item }: Props) {
 
   return (
     <div className="videoContainer">
-      <PlayerPlay />
       {item.video_length && item.video_length !== "None" && getDuration(item)}
     </div>
   );
